@@ -37,6 +37,6 @@ class TestConstroller extends Controller
                 );
                 array_push($orders, $items);
             }
-        return $orders;
+            return response()->json($orders);
     }
 }
