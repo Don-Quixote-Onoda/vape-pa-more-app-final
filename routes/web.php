@@ -10,6 +10,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\UserLogsController;
 use App\Http\Controllers\UsersController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,11 +33,16 @@ use App\Http\Controllers\UsersController;
 // });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard',[
+        'all_products' => Product::all() 
+        ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/orders-dashboard', function () {
-    return Inertia::render('OrdersDashboard');
+    return Inertia::render('OrdersDashboard', [
+    'all_products' => Product::all() 
+    ]
+);
 })->middleware(['auth', 'verified'])->name('orders-dashboard');
 
 

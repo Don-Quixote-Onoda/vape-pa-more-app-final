@@ -71,13 +71,13 @@ export default function OrderDetails(props) {
             errors={props.errors}
             header={
                 <h2 classNameName="font-semibold text-xl text-gray-800 leading-tight">
-                    OrderDetails
+                    Payments
                 </h2>
             }
         >
             <div className="container px-6 mx-auto grid">
                 <h2 className="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
-                    OrderDetails
+                    Payments
                 </h2>
                 <div className="w-full mb-8 overflow-hidden rounded-lg shadow-xs">
                     <div className="w-full overflow-x-auto card">

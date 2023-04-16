@@ -303,7 +303,7 @@ export default function FormDialog({userDialog, setSubmitted, setUserDialog, sub
                     options={roles}
                     optionLabel="name"
                     editable
-                    placeholder="Select a City"
+                    placeholder="Select user role"
                     className={`w-full md:w-14rem ${classNames({
                         "p-invalid": submitted && !data.address,
                     })} `}

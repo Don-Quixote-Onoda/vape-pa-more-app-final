@@ -24,8 +24,7 @@ export default function Authenticated({ auth, header, children }) {
                         </Link>
                     </div>
                     <ul className="mt-6">
-                        {
-                            auth.user.role == 1 && <NavLink
+                        <NavLink
                             href={route("dashboard")}
                             active={route().current("dashboard")}
                         >
@@ -43,27 +42,7 @@ export default function Authenticated({ auth, header, children }) {
                             </svg>
                             <span className="ml-4">Dashboard</span>
                         </NavLink>
-                        }
-                        {
-                            auth.user.role == 0 && <NavLink
-                            href={route("orders-dashboard")}
-                            active={route().current("orders-dashboard")}
-                        >
-                            <svg
-                                className="w-5 h-5"
-                                aria-hidden="true"
-                                fill="none"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                            </svg>
-                            <span className="ml-4">Orders Dashboard</span>
-                        </NavLink>
-                        }
+                       
                     </ul>
                     <ul>
                         <NavLink
@@ -118,9 +97,9 @@ export default function Authenticated({ auth, header, children }) {
                             >
                                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>{" "}
-                            <span className="ml-4">Order Details</span>
+                            <span className="ml-4">Payments</span>
                         </NavLink>
-                        <NavLink
+                        {/* <NavLink
                             href={route("payments.index")}
                             active={route().current("payments.index")}
                         >
@@ -137,7 +116,7 @@ export default function Authenticated({ auth, header, children }) {
                                 <path fill="currentColor" d="M13,16H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2ZM9,10h2a1,1,0,0,0,0-2H9a1,1,0,0,0,0,2Zm12,2H18V3a1,1,0,0,0-.5-.87,1,1,0,0,0-1,0l-3,1.72-3-1.72a1,1,0,0,0-1,0l-3,1.72-3-1.72a1,1,0,0,0-1,0A1,1,0,0,0,2,3V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM5,20a1,1,0,0,1-1-1V4.73L6,5.87a1.08,1.08,0,0,0,1,0l3-1.72,3,1.72a1.08,1.08,0,0,0,1,0l2-1.14V19a3,3,0,0,0,.18,1Zm15-1a1,1,0,0,1-2,0V14h2Zm-7-7H7a1,1,0,0,0,0,2h6a1,1,0,0,0,0-2Z"/>
                             </svg>{" "}
                             <span className="ml-4">Payments</span>
-                        </NavLink>
+                        </NavLink> */}
                         {/* {
                             auth.user.role == 0 && <NavLink
                             href={route("user-logs.index")}

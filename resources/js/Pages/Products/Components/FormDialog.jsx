@@ -10,7 +10,7 @@ import { classNames } from "primereact/utils";
 export default function FormDialog({productDialog, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
 
     const toast = useRef(null);
-    const status = [{ name: "Available" }, { name: "Not Available" }];
+    const status = [{ name: "INSTOCK" }, { name: "LOWSTOCK" }, { name: "OUTOFSTOCK" }];
 
     const hideDialog = () => {
         setSubmitted(false);
@@ -68,6 +68,8 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                 
             }
         }
+
+        console.log(data);
 
         
     };
@@ -212,7 +214,10 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                     Status
                 </label>
                 <Dropdown
-                    value={(data.status) == 1 ? 'Available' : 'Not Available'}
+                    value={
+                        (data.status) == 'INSTOCK' ? 'INSTOCK' : 
+                        (data.status) == 'LOWSTOCK' ? 'LOWSTOCK' : 'OUTOFSTOCK'
+                    }
                     onChange={(e) => onStatusChange(e, "status")}
                     options={status}
                     optionLabel="name"

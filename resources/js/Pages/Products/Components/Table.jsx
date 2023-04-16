@@ -100,7 +100,8 @@ export default function Table(props) {
     const statusTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <span>{(rowData == 1) ? 'Available' : 'Not Available'}</span>
+                <span> {(rowData.status) == 'INSTOCK' ? 'INSTOCK' : 
+                        (rowData.status) == 'LOWSTOCK' ? 'LOWSTOCK' : 'OUTOFSTOCK'}</span>
             </React.Fragment>
         );
     }

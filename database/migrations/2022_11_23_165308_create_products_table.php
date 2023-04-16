@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('product_name');
             $table->string('product_image');
             $table->double('price', 10, 2);
-            $table->integer('status');
+            $table->string('status');
             $table->integer('is_deleted');
             $table->foreignId('product_type_id')->constrained();
             $table->integer('quantity');

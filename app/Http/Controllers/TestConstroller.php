@@ -33,10 +33,15 @@ class TestConstroller extends Controller
                     'product_name' => $item->product->product_name,
                     'product_image' => $item->product->product_image,
                     'quantity' => $item->quantity,
-                    'total_price' => $item->total_price
+                    'total_price' => $item->total_price,
+                    'products' => $item->product
                 );
+                
                 array_push($orders, $items);
+                $item->product->update([
+                    'quantity' => $item->product->quantity - 2
+                ]);
             }
-            return response()->json($orders);
+            dd($orders);
     }
 }

@@ -32,13 +32,16 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $filename = time().rand(3, 9). '.'.$request->file('product_image')->getClientOriginalExtension();
-        $request->file('product_image')->move('uploads/products/', $filename);
+        $filename = '';
+        if($request->hasFile('product_image')) {
+            $filename = time().rand(3, 9). '.'.$request->file('product_image')->getClientOriginalExtension();
+            $request->file('product_image')->move('uploads/products/', $filename);
+        }
         $product = Product::create([
             'product_name' =>$request->product_name,
             'product_image' => $filename,
             'price' => $request->price,
-            'status' => ($request->status == "Active") ? 1 : 0,
+            'status' => $request->status,
             'is_deleted' => 0,
             'product_type_id' => 1,
             'quantity' => $request->quantity,
@@ -69,16 +72,19 @@ class ProductsController extends Controller
     public function update(Request $request)
     {
 
+      
         $product = Product::find($request->id);
-        $product->product_name = $request->product_name;
-
         if($request->hasFile('product_image')) {
             $filename = time().rand(3, 9). '.'.$request->file('product_image')->getClientOriginalExtension();
             $request->file('product_image')->move('uploads/products/', $filename);
-            $product->product_image = $request->product_name;
+            $product->product_image = $filename;
+
         }
+
+       
+        $product->product_name = $request->product_name;
         $product->price = $request->price;
-        $product->status = ($request->status == "Available") ? 1 : 0;
+        $product->status = $request->status;
         $product->product_type_id = 1;
         $product->quantity = $request->quantity;
         $product->save();
