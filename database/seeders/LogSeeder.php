@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Logs;
 
+
 class LogSeeder extends Seeder
 {
     /**
@@ -27,5 +28,7 @@ class LogSeeder extends Seeder
                 'payment_id' => 2,
                 'order_detail_id' => 2
             ]);
+
+            
     }
 }
