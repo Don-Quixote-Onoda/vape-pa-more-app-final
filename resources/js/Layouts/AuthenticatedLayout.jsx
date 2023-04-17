@@ -9,20 +9,27 @@ import Header from "@/Components/Header";
 export default function Authenticated({ auth, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+    const [toggleSidebar, setToogleSidebar] = useState(false);
 
-    useEffect(() => {
-        console.log(auth.user.role);
-    })
 
     return (
         <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-            <aside className="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0">
-                <div className="py-4 text-gray-500 dark:text-gray-400">
-                    <div className="shrink-0 flex items-center px-6">
+            <div className="p-5">
+            <i className="pi pi-bars" style={{ color: 'slateblue', cursor: 'pointer' }} 
+                onClick={() => setToogleSidebar(true)}
+            ></i>
+            </div>
+            <aside className={`z-20 ${toggleSidebar === true ? 'show' : ''} hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0`}>
+                <div className="py-4 text-gray-500 dark:text-gray-400 ">
+                    <div className="shrink-0 flex items-center px-6 justify-between">
                         <Link href="/">
                             <ApplicationLogo className="block h-9 w-auto fill-current text-gray-800" />
                         </Link>
+                        <i className="pi pi-times" style={{ color: 'slateblue', cursor: 'pointer' }} 
+                            onClick={() => setToogleSidebar(false)}
+                        ></i>
                     </div>
+                    <div className="menus">
                     <ul className="mt-6">
                         <NavLink
                             href={route("dashboard")}
@@ -158,6 +165,7 @@ export default function Authenticated({ auth, header, children }) {
                         </NavLink>
                         }
                     </ul>
+                    </div>
                 </div>
             </aside>
             <div className="flex flex-col flex-1 w-full">

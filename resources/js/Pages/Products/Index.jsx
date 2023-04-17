@@ -47,7 +47,6 @@ export default function Products(props) {
     const confirmDeleteProduct = (product) => {
         setData({ ...product });
         setDeleteProductDialog(true);
-        console.log(product);
     };
 
     const confirmDeleteSelected = () => {

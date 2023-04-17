@@ -29,6 +29,7 @@ export default function OrderDetails(props) {
     const [orderDetail, setOrderDetail] = useState(emptyOrderDetail);
     const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
     const [submitted, setSubmitted] = useState(false);
+    const [orders, setOrders] = useState([]);
     const toast = useRef(null);
     const { data, setData, post, reset, processing, errors } = useForm({
         id: null,
@@ -85,7 +86,7 @@ export default function OrderDetails(props) {
                         <div className="card">
                             <Table  openNew={openNew}  editOrderDetail={editOrderDetail} confirmDeleteOrderDetail={confirmDeleteOrderDetail} setSelectedOrderDetails={setSelectedOrderDetails} selectedOrderDetails={selectedOrderDetails} />
                         </div>
-                        <ViewDialog orderDetail={orderDetail} data={data} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} orderDetailDialog={orderDetailDialog} setSubmitted={setSubmitted} setOrderDetailDialog={setOrderDetailDialog} />
+                        <ViewDialog orderDetail={orderDetail} data={data} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} orderDetailDialog={orderDetailDialog} setSubmitted={setSubmitted} setOrderDetailDialog={setOrderDetailDialog} orders={orders} setOrders={setOrders} />
 
                         <Delete orderDetail={orderDetail} data={data} reset={reset} setData={setData} post={post} errors={errors} deleteOrderDetailsDialog={deleteOrderDetailsDialog} setSelectedOrderDetails={setSelectedOrderDetails} selectedOrderDetails={selectedOrderDetails} setDeleteOrderDetailsDialog={setDeleteOrderDetailsDialog} setDeleteOrderDetailDialog={setDeleteOrderDetailDialog} deleteOrderDetailDialog ={deleteOrderDetailDialog } />
                     </div>

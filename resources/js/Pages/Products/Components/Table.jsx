@@ -8,6 +8,13 @@ import { Link, useForm, usePage } from "@inertiajs/react";
 export default function Table(props) {
     const products = usePage().props.products;
     const user_role = usePage().props.auth.user.role;
+    const [sortField, setSortField] = useState('id');
+    const [sortOrder, setSortOrder] = useState(-1);
+
+    const onSort = (e) => {
+        setSortField(e.sortField);
+        setSortOrder(e.sortOrder);
+      };
 
     const [globalFilter, setGlobalFilter] = useState(null);
     const dt = useRef(null);
@@ -80,7 +87,7 @@ export default function Table(props) {
                     placeholder="Search..."
                 />
             </span>
-            <div className="flex justify-between basis-3/4">
+            <div className="flex justify-between gap-3 basis-3/4">
             <Button
                 label="Export"
                 icon="pi pi-upload"
@@ -120,6 +127,7 @@ export default function Table(props) {
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
             globalFilter={globalFilter}
             header={header}
+            sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
             <Column selectionMode="multiple" exportable={false}></Column>
             <Column

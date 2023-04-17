@@ -10,6 +10,13 @@ export default function Table(props) {
     const user_role = usePage().props.auth.user.role;
     const [globalFilter, setGlobalFilter] = useState(null);
     const dt = useRef(null);
+    const [sortField, setSortField] = useState('id');
+    const [sortOrder, setSortOrder] = useState(-1);
+
+    const onSort = (e) => {
+        setSortField(e.sortField);
+        setSortOrder(e.sortOrder);
+      };
 
     const imageBodyTemplate = (rowData) => {
         return (
@@ -38,7 +45,7 @@ export default function Table(props) {
                     rounded
                     outlined
                     severity="danger"
-                    onClick={() => props.confirmDeleteProduct(rowData)}
+                    onClick={() => props.confirmDeleteOrder(rowData)}
                 />
                 }
             </React.Fragment>
@@ -79,7 +86,7 @@ export default function Table(props) {
                     placeholder="Search..."
                 />
             </span>
-            <div className="flex justify-between basis-3/4">
+            <div className="flex gap-3 justify-between basis-3/4">
             <Button
                 label="Export"
                 icon="pi pi-upload"
@@ -110,6 +117,7 @@ export default function Table(props) {
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} orders"
             globalFilter={globalFilter}
             header={header}
+            sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
             <Column
                 field="order_number"
@@ -125,6 +133,12 @@ export default function Table(props) {
             <Column
                 field="product_name"
                 header="Product Name"
+                sortable
+                style={{ minWidth: "2rem" }}
+            ></Column>
+            <Column
+                field="price"
+                header="Price"
                 sortable
                 style={{ minWidth: "2rem" }}
             ></Column>

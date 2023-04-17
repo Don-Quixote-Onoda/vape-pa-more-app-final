@@ -35,7 +35,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                 data.status &&
                 data.id
             ) {
-                console.log(data);
                
                     post(route('updateProduct'), {
                         forceFormData: true,
@@ -44,7 +43,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                             setData(product);
                         },
                         onError: () => {
-                            console.log(errors);
                         },
                     });
                     
@@ -69,7 +67,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
             }
         }
 
-        console.log(data);
 
         
     };
@@ -104,7 +101,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
         const val = (e.target && e.target.value) || "";
         setData(name,val.name);
 
-        console.log(data);
     };
 
     const onInputNumberChange = (e, name) => {
@@ -117,7 +113,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
         const val = (e.target.files[0]) || "";
         setData(name,val);
 
-        console.log(data);
     };
 
 

@@ -9,6 +9,9 @@ import { Tag } from "primereact/tag";
 import { Dialog } from "primereact/dialog";
 import { InputNumber } from "primereact/inputnumber";
 import { useForm } from "@inertiajs/react";
+import { router } from '@inertiajs/react'
+import axios from 'axios';
+import dashboard_styles from './Dashboard.css';
 
 export default function Dashboard(props) {
     const [products, setProducts] = useState([]);
@@ -27,20 +30,7 @@ export default function Dashboard(props) {
     const { data, setData, post, reset, processing, errors } = useForm(JSON.parse(localStorage.getItem('items')));
 
     useEffect(() => {
-        // ProductService.getProducts().then((data) =>
-        //     setProducts(data.slice(0, 12))
-        // );
-
-        // fetch("http://127.0.0.1:8000/api/test")
-        //     .then((response) => {
-        //         return response.json();
-        //     })
-        //     .then((data) => {
-        //         console.log(data);
-        //     });
-
             setProducts(props.all_products);
-            console.log(props);
     }, []); 
 
     const getSeverity = (product) => {
@@ -62,7 +52,6 @@ export default function Dashboard(props) {
     const setSelectedProduct = (selectedProduct) => {
         setProduct(selectedProduct);
         setShowProductModal(true);
-        console.log(product);
     };
 
     const handleOrders = () => {};
@@ -85,7 +74,6 @@ export default function Dashboard(props) {
             setSubmitted(false);
             setShowProductModal(false);
             setQuantity(null);
-            console.log(data);
         }
     };
 
@@ -96,7 +84,6 @@ export default function Dashboard(props) {
         });
         setTotalAmount(total);
 
-        console.log(props);
     });
 
     const removeOrder = (index) => {
@@ -134,36 +121,65 @@ export default function Dashboard(props) {
 
     const saveOrderDetails = () => {
       setSubmitted(true);
-      localStorage.setItem('items', JSON.stringify({
-        orders: orders,
-        order_details: {
-          total_amount: totalAmount,
-          order_number: orderNumber
-        },
-        user_id: props.auth.user.id
-    }));
+        localStorage.setItem('items', JSON.stringify({
+            orders: orders,
+            order_details: {
+            total_amount: totalAmount,
+            order_number: orderNumber,
+            cash: cashAmount,
+            change: totalChange
+            },
+            user_id: props.auth.user.id
+        }));
     
-    setData(localStorage.getItem('items'));
+    // setData(localStorage.getItem('items'));
       if(
         orders &&
         totalAmount &&
         orderNumber
         ){
-          post(route('orders.store'), {
-            forceFormData: true,
-            onSuccess: () =>{
-              setShowOrderDetailModal(false);
-        setCashAmount(null);
-        setTotalChange(null);
-        setSubmitted(false);
+        //   post(route('orders.store', {
+        //     orders: orders,
+        //     order_details: {
+        //       total_amount: totalAmount,
+        //       order_number: orderNumber,
+        //       cash: cashAmount,
+        //       change: totalChange
+        //     },
+        //     user_id: props.auth.user.id
+        // }), {
+        //     forceFormData: true,
+        //     onSuccess: () =>{
+        //       setShowOrderDetailModal(false);
+        // setCashAmount(null);
+        // setTotalChange(null);
+        // setSubmitted(false);
+        // setOrders([]); 
+        //     },
+        //     onError: () => {
+        //     },
+        // });
+        axios.post(route('orders.store'), {
+            orders: orders,
+            order_details: {
+                total_amount: totalAmount,
+                order_number: orderNumber,
+                cash: cashAmount,
+                change: totalChange
             },
-            onError: () => {
-                console.log(errors);
-            },
+            user_id: props.auth.user.id
+        })
+        .then((response) => {
+            setShowOrderDetailModal(false);
+            setCashAmount(null);
+            setTotalChange(null);
+            setSubmitted(false);
+            setOrders([]); 
+        })
+        .catch((error) => {
         });
-        }
+    } 
 
-      console.log(data);
     }
 
     const [isOutOfStock, setOutOfStock] = useState(false);
@@ -193,17 +209,14 @@ export default function Dashboard(props) {
                     Orders Dashboard
                 </h2>
 
-                <div className="flex justify-between">
+                <div className="flex justify-between dashboard-main-style">
                     <div
-                        style={{ flexBasis: "70%" }}
                         className="flex flex-wrap gap-4"
                     >
                         {products.map((product) => (
                             <div
-                                style={{
-                                    flexBasis: "calc(calc(100% / 4) - 1rem)",
-                                }}
-                                className="flex flex-col pb-2 bg-stone-100 shadow-md rounded border-gray-900 items-center gap-3 py-5 p-2"
+                               
+                                className="flex dashboard-product-card flex-col pb-2 bg-stone-100 shadow-md rounded border-gray-900 items-center gap-3 py-5 p-2"
                             >
                                 <Tag
                                     value={product.status}
@@ -250,7 +263,6 @@ export default function Dashboard(props) {
                         ))}
                     </div>
                     <div
-                        style={{ flexBasis: "30%" }}
                         className="bg-stone-300 rounded p-5"
                     >
                         <header className="flex justify-between">

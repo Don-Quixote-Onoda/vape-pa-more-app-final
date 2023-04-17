@@ -15,6 +15,8 @@ class OrderDetail extends Model
 
     protected $fillable = [
         'total_amount',
+        'cash',
+        'change',
         'user_id',
         'order_number',
         'is_deleted'

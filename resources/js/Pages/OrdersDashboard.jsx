@@ -33,7 +33,6 @@ export default function Dashboard(props) {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
             });
     }, []);
 
@@ -86,7 +85,6 @@ export default function Dashboard(props) {
         });
         setTotalAmount(total);
 
-        console.log(props);
     });
 
     const removeOrder = (index) => {

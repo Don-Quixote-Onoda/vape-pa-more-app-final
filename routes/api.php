@@ -26,6 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::get('test', [TestConstroller::class, 'test']);
+Route::get('get_all_orders_by_order_number/{order_number}', [OrdersController::class, 'getAllOrdersByOrderNumber'])->name('getOrdersByOrderNumber');
 
 Route::post('user', [UsersController::class, 'store'])->name('saveUser');
 Route::post('update_user', [UsersController::class, 'update'])->name('updateUser');
@@ -37,3 +38,4 @@ Route::post('delete_order', [OrdersController::class, 'destroy'])->name('deleteO
 Route::post('delete_orderdetails', [OrderDetailsController::class, 'destroy'])->name('deleteOrderDetails');
 Route::post('delete_payment', [PaymentsController::class, 'destroy'])->name('deletePayment');
 // Route::get('user-logs', [UserLogsController::class, 'index']);
+

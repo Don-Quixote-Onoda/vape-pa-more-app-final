@@ -20,9 +20,6 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
         patch(route('profile.update'));
     };
 
-    useEffect(()=> {
-        console.log(user);
-    });
     return (
         <section className={className}>
             <header>

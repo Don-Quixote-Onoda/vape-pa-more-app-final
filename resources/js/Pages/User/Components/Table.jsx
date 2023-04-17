@@ -10,7 +10,13 @@ export default function Table(props) {
 
     const [globalFilter, setGlobalFilter] = useState(null);
     const dt = useRef(null);
+    const [sortField, setSortField] = useState('id');
+    const [sortOrder, setSortOrder] = useState(-1);
 
+    const onSort = (e) => {
+        setSortField(e.sortField);
+        setSortOrder(e.sortOrder);
+      };
     const imageBodyTemplate = (rowData) => {
         return (
             <img
@@ -77,7 +83,7 @@ export default function Table(props) {
                     placeholder="Search..."
                 />
             </span>
-            <div className="flex justify-between basis-3/4">
+            <div className="flex justify-between gap-3 basis-3/4">
             <Button
                 label="Export"
                 icon="pi pi-upload"
@@ -108,6 +114,7 @@ export default function Table(props) {
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} users"
             globalFilter={globalFilter}
             header={header}
+            sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
             <Column selectionMode="multiple" exportable={false}></Column>
             <Column

@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('order_details', function (Blueprint $table) {
             $table->id();
             $table->double('total_amount', 10, 2);
+            $table->double('cash', 10, 2);
+            $table->double('change', 10, 2);
             $table->foreignId('user_id')->constrained();
             $table->string('order_number');
             $table->integer('is_deleted');

@@ -8,20 +8,29 @@ import { Calendar } from "primereact/calendar";
 import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 
-
-export default function ViewDialog({orderDialog, setSubmitted, setOrderDialog, submitted, order, data, setData, post, reset, processing, errors}) {
-
+export default function ViewDialog({
+    orderDialog,
+    setSubmitted,
+    setOrderDialog,
+    submitted,
+    order,
+    data,
+    setData,
+    post,
+    reset,
+    processing,
+    errors,
+}) {
     const hideDialog = () => {
         setSubmitted(false);
         setOrderDialog(false);
         setData(order);
     };
 
-
     return (
         <Dialog
             visible={orderDialog}
-            style={{ width: "32rem" }}
+            style={{ width: "25rem" }}
             breakpoints={{ "960px": "75vw", "641px": "90vw" }}
             header="Order Details"
             modal
@@ -29,12 +38,33 @@ export default function ViewDialog({orderDialog, setSubmitted, setOrderDialog, s
             onHide={hideDialog}
         >
             <div>
-                <img src={`http://127.0.0.1:8000/uploads/products/${data.product_image}`}
-                alt={data.image}
-                className="shadow-2 border-round mx-auto mb-5"
-                style={{ width: "50%" }} />
-                <h1 className="text-4xl mb-3">{data.product_name}</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <img
+                    src={`http://127.0.0.1:8000/uploads/products/${data.product_image}`}
+                    alt={data.image}
+                    className="shadow-2 border-round mx-auto mb-5"
+                    style={{ width: "50%" }}
+                />
+                <div className="flex justify-between mb-3">
+                    <p className="text-xl mb-3 font-bold">Product Name: </p>
+                    <p className="text-xl mb-3">{data.product_name}</p>
+                </div>
+                <div className="flex justify-between mb-3">
+                    <p className="text-xl mb-3 font-bold">Order Number: </p>
+                    <p className="text-xl mb-3">{data.order_number}</p>
+                </div>
+
+                <div className="flex justify-between mb-3">
+                    <p className="text-xl mb-3 font-bold">Price: </p>
+                    <p className="text-xl mb-3">₱ {data.price}</p>
+                </div>
+                <div className="flex justify-between mb-3">
+                    <p className="text-xl mb-3 font-bold">Quantity: </p>
+                    <p className="text-xl mb-3">{data.quantity}</p>
+                </div>
+                <div className="flex justify-between mb-3">
+                    <p className="text-xl mb-3 font-bold">Total Price: </p>
+                    <p className="text-xl mb-3">₱ {data.total_price}</p>
+                </div>
             </div>
         </Dialog>
     );

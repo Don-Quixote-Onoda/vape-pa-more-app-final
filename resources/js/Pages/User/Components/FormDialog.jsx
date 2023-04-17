@@ -50,7 +50,6 @@ export default function FormDialog({userDialog, setSubmitted, setUserDialog, sub
                     life: 3000,
                 });
             } else {
-                console.log(data);
                 post(route('saveUser'), {
                     forceFormData: true,
                     onSuccess: () =>{
@@ -90,7 +89,6 @@ export default function FormDialog({userDialog, setSubmitted, setUserDialog, sub
                         setData(user);
                     },
                     onError: () => {
-                        console.log(errors);
                     },
                 });
                 

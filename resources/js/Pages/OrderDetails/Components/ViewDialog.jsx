@@ -9,30 +9,112 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 
 
-export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDetailDialog, submitted, orderDetail, data, setData, post, reset, processing, errors}) {
-
+export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDetailDialog, submitted, orderDetail, data, setData, post, reset, processing, errors, orders, setOrders}) {
+    
     const hideDialog = () => {
         setSubmitted(false);
         setOrderDetailDialog(false);
         setData(orderDetail);
+        setOrders([]);
     };
-
 
     return (
         <Dialog
             visible={orderDetailDialog}
             style={{ width: "32rem" }}
             breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-            header="OrderDetail Details"
+            header="Order Details"
             modal
             className="p-fluid"
             onHide={hideDialog}
         >
-            <div>
-                <h1 className="text-4xl mb-3">#{data.order_number}</h1>
-                <h5 className="text-md mb-3 font-bold">Total Price: {data.total_amount}</h5>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            </div>
+           <div className="flex flex-col pb-2 bg-stone-100 shadow-md rounded border-gray-900 items-center gap-3 py-5 p-2">
+                    <div
+                        className="flex flex-col gap-3 w-full items-center justify-between p-2"
+                    >
+                            <h3 className="text-xl w-full font-bold">{data.order_number}</h3>
+
+                        <header className="flex w-full justify-between">
+                            <h4>Orders</h4>
+                            <p>Subtotal</p>
+                        </header>
+                        <hr />
+                        
+                        {data.orders !== undefined && (
+                            <main className="py-4 w-full">
+                                {data.orders.map((order, index) => (
+                                    <div>
+                                        <div
+                                            className="flex flex-row align-end justify-between py-2"
+                                            style={{ position: "relative" }}
+                                        >
+                                            <div>
+                                                <img
+                                                    className="w-24 shadow-2 rounded"
+                                                    src={`http://127.0.0.1:8000/uploads/products/${order.product_image}`}
+                                                    alt={order.product_name}
+                                                />
+                                                <p className="font-bold">
+                                                    {order.product_name}
+                                                </p>
+                                            </div>
+                                            <div className="self-end">
+                                                
+                                                <p className="text-end font-bold">
+                                                    ₱ {order.total_price}.00
+                                                </p>
+                                                <p className="text-end">
+                                                    Qty: {order.quantity}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                    </div>
+                                ))}
+                                <div className="flex justify-between py-5">
+                                    <h4>Total:</h4>
+                                    <p className="text-end font-bold">
+                                        ₱ {data.total_amount}.00
+                                    </p>
+                                </div>
+                            </main>
+                        )}
+                    </div>
+
+                    <div
+                        className="flex flex-col gap-3 w-full items-center justify-between p-2"
+                    >
+                       <div className="w-full">
+                       <h5 className="text-xl font-bold">{data.order_number}</h5>
+                       <span className=" mb-3">Orde Number</span>
+
+                       </div>
+                        <div className="flex w-full flex-col self-start">
+                            <span className="text-md font-bold">Cash Amount</span>
+                            <InputNumber
+                                disabled
+                                value={data.cash}
+                            />
+                           
+                        </div>
+                        <div className="flex w-full flex-col self-start">
+                        <span className="text-md font-bold">Change</span>
+                            
+                            <InputNumber
+                                value={data.change}
+                                disabled
+                            />
+                            
+                        </div>
+                        <Button
+                            style={{ "justify-content": "center" }}
+                            className="text-center !bg-red-500 !border-0"
+                            onClick={() => hideDialog()}
+                        >
+                            Close
+                        </Button>
+                    </div>
+                </div>
         </Dialog>
     );
 }

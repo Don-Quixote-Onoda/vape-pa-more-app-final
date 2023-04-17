@@ -16,7 +16,9 @@ class OrderDetailSeeder extends Seeder
     public function run()
     {
             OrderDetail::create([
-                'total_amount' => 11000.2,
+                'total_amount' => 1100.2,
+                'cash' => 1200.2,
+                'change' => 100.2,
                 'user_id' => 1,
                 'is_deleted' => 0,
                 'order_number'=> '3355'
@@ -24,6 +26,8 @@ class OrderDetailSeeder extends Seeder
 
             OrderDetail::create([
                 'total_amount' => 4000,
+                'cash' => 4000,
+                'change' => 0,
                 'user_id' => 1,
                 'is_deleted' => 0,
                 'order_number'=> '0035'

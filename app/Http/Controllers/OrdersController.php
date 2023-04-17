@@ -24,7 +24,8 @@ class OrdersController extends Controller
                     'product_name' => $item->product->product_name,
                     'product_image' => $item->product->product_image,
                     'quantity' => $item->quantity,
-                    'total_price' => $item->total_price
+                    'total_price' => $item->total_price,
+                    'price' => $item->product->price
                 );
                 array_push($orders, $items);
             }
@@ -55,7 +56,7 @@ class OrdersController extends Controller
                 'is_deleted' => 0
             ]);
             $product = Product::find($item['product_id']);
-            if($product->quantity < 5 && $product->quantity > 0){
+            if($product->quantity < 5 && $product->quantity > 0){   
                 $product->update([
                     'quantity' => ($product->quantity - $item['quantity']),
                     'status' => 'LOWSTOCK'
@@ -79,6 +80,8 @@ class OrdersController extends Controller
         OrderDetail::create([
             'total_amount' => $request->order_details['total_amount'],
             'order_number' => $request->order_details['order_number'],
+            'cash' => $request->order_details['cash'],
+            'change' => $request->order_details['change'],
             'user_id' => $request->user_id,
             'is_deleted' => 0
         ]);
@@ -120,5 +123,28 @@ class OrdersController extends Controller
             'is_deleted' => 1,
         ]);
         return redirect()->route('orders.index');
+    }
+
+    public function getAllOrdersByOrderNumber(string $order_number) {
+        $orders = array();
+        $order = Order::where([
+            'is_deleted' => 0,
+            'order_number' => $order_number
+        ])->get();
+            foreach($order as $item) {
+                $items = array(
+                    'id' => $item->id,
+                    'product_name' => $item->product->product_name,
+                    'product_image' => $item->product->product_image,
+                    'quantity' => $item->quantity,
+                    'total_price' => $item->total_price,
+                    'price' => $item->product->price,
+                );
+                
+                array_push($orders, $items);
+            }
+            return response()->json([
+                'orders' => $orders
+            ]);
     }
 }
