@@ -52,7 +52,8 @@ export default function Authenticated({ auth, header, children }) {
                        
                     </ul>
                     <ul>
-                        <NavLink
+                        {
+                            auth.user.role == 1 && <NavLink
                             href={route("products.index")}
                             active={route().current("products.index")}
                         >
@@ -70,7 +71,9 @@ export default function Authenticated({ auth, header, children }) {
                             </svg>{" "}
                             <span className="ml-4">Products</span>
                         </NavLink>
-                        <NavLink
+                        }
+                        {
+                            auth.user.role == 1 && <NavLink
                             href={route("orders.index")}
                             active={route().current("orders.index")}
                         >
@@ -88,6 +91,9 @@ export default function Authenticated({ auth, header, children }) {
                             </svg>{" "}
                             <span className="ml-4">Orders</span>
                         </NavLink>
+                        }
+                        
+                        
                         <NavLink
                             href={route("order-details.index")}
                             active={route().current("order-details.index")}
