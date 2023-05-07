@@ -7,42 +7,53 @@ use App\Models\Logs;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use Illuminate\Support\Facades\DB;
+
 
 class TestConstroller extends Controller
 {
     public function test() {
 
-        $orderDetails = OrderDetail::where('is_deleted', 0)->get();
-        $response = array();
-        foreach($orderDetails as $item)
-        {
-           $orders = array();
-            $order = Order::where([
-                'is_deleted' => 0,
-                'order_number' => $item->order_number
-            ])->get();
-                foreach($order as $orderItem) {
-                    $items = array(
-                        'id' => $orderItem->id,
-                        'product_name' => $orderItem->product->product_name,
-                        'product_image' => $orderItem->product->product_image,
-                        'quantity' => $orderItem->quantity,
-                        'total_price' => $orderItem->total_price,
-                        'price' => $orderItem->product->price,
-                    );
+        // $orderDetails = OrderDetail::where('is_deleted', 0)->get();
+        // $response = array();
+        // foreach($orderDetails as $item)
+        // {
+        //    $orders = array();
+        //     $order = Order::where([
+        //         'is_deleted' => 0,
+        //         'order_number' => $item->order_number
+        //     ])->get();
+        //         foreach($order as $orderItem) {
+        //             $items = array(
+        //                 'id' => $orderItem->id,
+        //                 'product_name' => $orderItem->product->product_name,
+        //                 'product_image' => $orderItem->product->product_image,
+        //                 'quantity' => $orderItem->quantity,
+        //                 'total_price' => $orderItem->total_price,
+        //                 'price' => $orderItem->product->price,
+        //             );
                 
-                array_push($orders, $items);
-            }
-            array_push($response, array(
-                'id' => $item->id,
-                'total_amount' => $item->total_amount,
-                'cash' => $item->cash,
-                'change' => $item->change,
-                'order_number' => $item->order_number,
-                'orders'=> $orders
-            ));
-        }
-        dd($response);
+        //         array_push($orders, $items);
+        //     }
+        //     array_push($response, array(
+        //         'id' => $item->id,
+        //         'total_amount' => $item->total_amount,
+        //         'cash' => $item->cash,
+        //         'change' => $item->change,
+        //         'order_number' => $item->order_number,
+        //         'orders'=> $orders
+        //     ));
+        // }
+        // dd($response);
+
+        $orderDetails = OrderDetail::select(DB::raw('CONCAT(YEAR(created_at), "-", WEEK(created_at)) as week'), DB::raw('SUM(total_amount) as total_amount'))
+        ->where('is_deleted', 0)
+        ->groupBy('week')
+        ->get();
+    
+        return $orderDetails;
+
+
 
         // $orders = array();
         // $order = Order::where([

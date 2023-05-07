@@ -164,6 +164,15 @@ export default function Authenticated({ auth, header, children }) {
                             <span className="ml-4">Users</span>
                         </NavLink>
                         }
+                        {
+                            auth.user.role == 1 && <NavLink
+                            href={route("summary-reports")}
+                            active={route().current("summary-reports")}
+                        >
+                            <i className="pi pi-chart-line"></i>
+                            <span className="ml-4">Reports</span>
+                        </NavLink>
+                        }
                     </ul>
                     </div>
                 </div>

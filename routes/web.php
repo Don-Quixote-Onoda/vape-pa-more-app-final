@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLogsController;
 use App\Http\Controllers\UsersController;
 use App\Models\Product;
@@ -57,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductsController::class);
     Route::resource('user-logs',UserLogsController::class);
     Route::resource('users', UsersController::class);
+    Route::get('summary-reports', [ReportsController::class, 'index'])->name('summary-reports');
 });
 
 require __DIR__.'/auth.php';
