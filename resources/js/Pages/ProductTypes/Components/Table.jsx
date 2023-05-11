@@ -6,13 +6,13 @@ import { Button } from "primereact/button";
 import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Table(props) {
-    const products = usePage().props.products;
+    const product_types = usePage().props.product_types;
     const user_role = usePage().props.auth.user.role;
     const [sortField, setSortField] = useState('id');
     const [sortOrder, setSortOrder] = useState(-1);
 
     useEffect(() => {
-        console.log(products);
+        console.log(product_types);
     })
 
     const onSort = (e) => {
@@ -26,7 +26,7 @@ export default function Table(props) {
     const imageBodyTemplate = (rowData) => {
         return (
             <img
-                src={`http://127.0.0.1:8000/uploads/products/${rowData.product_image}`}
+                src={`http://127.0.0.1:8000/uploads/product_types/${rowData.product_image}`}
                 alt={rowData.image}
                 className="shadow-2 border-round"
                 style={{ width: "64px" }}
@@ -75,8 +75,8 @@ export default function Table(props) {
             import("jspdf-autotable").then(() => {
                 const doc = new jsPDF.default(0, 0);
                 let rand = Math.random();
-                doc.autoTable(exportColumns, products);
-                doc.save("products"+rand+".pdf");
+                doc.autoTable(exportColumns, product_types);
+                doc.save("product_types"+rand+".pdf");
             });
         });
     };
@@ -134,7 +134,7 @@ export default function Table(props) {
     return (
         <DataTable
             ref={dt}
-            value={products}
+            value={product_types}
             selection={props.selectedProducts}
             onSelectionChange={(e) => props.setSelectedProducts(e.value)}
             dataKey="id"
@@ -142,13 +142,13 @@ export default function Table(props) {
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} product_types"
             globalFilter={globalFilter}
             header={header}
             sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
             <Column selectionMode="multiple" exportable={false}></Column>
-            <Column
+            {/* <Column
                 field="product_image"
                 header="Image"
                 body={imageBodyTemplate}
@@ -185,7 +185,7 @@ export default function Table(props) {
                 sortable
                 style={{ minWidth: "2rem" }}
                 body={transactionDateBody}
-            ></Column>
+            ></Column> */}
             <Column
                 body={actionBodyTemplate}
                 exportable={false}
