@@ -45,7 +45,7 @@ class ProductsController extends Controller
             'price' => $request->price,
             'status' => $request->status,
             'is_deleted' => 0,
-            'product_type_id' => 1,
+            'product_type_id' => $request->product_type,
             'quantity' => $request->quantity,
         ]);
 
@@ -87,7 +87,7 @@ class ProductsController extends Controller
         $product->product_name = $request->product_name;
         $product->price = $request->price;
         $product->status = $request->status;
-        $product->product_type_id = 1;
+        $product->product_type_id = $request->product_type;
         $product->quantity = $request->quantity;
         $product->save();
 

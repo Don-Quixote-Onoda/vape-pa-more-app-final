@@ -232,7 +232,7 @@ export default function FormDialog({productDialog, product_types, setSubmitted, 
             </div>
             <div className="field mb-5">
                 <label htmlFor="email" className="font-bold">
-                    Status
+                    Product Type
                 </label>
                 <Dropdown
                     value={ 
