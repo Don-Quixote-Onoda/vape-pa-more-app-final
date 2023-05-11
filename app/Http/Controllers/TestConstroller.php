@@ -8,72 +8,63 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\DB;
-
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 class TestConstroller extends Controller
 {
-    public function test() {
+    public function test()
+    {
+        $year = Carbon::now()->year;
 
-        // $orderDetails = OrderDetail::where('is_deleted', 0)->get();
-        // $response = array();
-        // foreach($orderDetails as $item)
-        // {
-        //    $orders = array();
-        //     $order = Order::where([
-        //         'is_deleted' => 0,
-        //         'order_number' => $item->order_number
-        //     ])->get();
-        //         foreach($order as $orderItem) {
-        //             $items = array(
-        //                 'id' => $orderItem->id,
-        //                 'product_name' => $orderItem->product->product_name,
-        //                 'product_image' => $orderItem->product->product_image,
-        //                 'quantity' => $orderItem->quantity,
-        //                 'total_price' => $orderItem->total_price,
-        //                 'price' => $orderItem->product->price,
-        //             );
-                
-        //         array_push($orders, $items);
-        //     }
-        //     array_push($response, array(
-        //         'id' => $item->id,
-        //         'total_amount' => $item->total_amount,
-        //         'cash' => $item->cash,
-        //         'change' => $item->change,
-        //         'order_number' => $item->order_number,
-        //         'orders'=> $orders
-        //     ));
-        // }
-        // dd($response);
+        $result = [];
+        
+        for ($m = 1; $m <= 12; $m++) {
+            $month = date("F", mktime(0, 0, 0, $m, 1, $year));
+            $weeks = [];
+        
+            $start = Carbon::createFromDate($year, $m, 1)->startOfWeek();
+            $end = Carbon::createFromDate($year, $m, 1)->endOfMonth()->endOfWeek();
+        
+            for ($week = 1; $start->lte($end); $week++) {
+                $days = [];
+        
+                for ($dayOfWeek = Carbon::SUNDAY; $dayOfWeek <= Carbon::SATURDAY; $dayOfWeek++) {
+                    $day = Carbon::createFromDate($year, $m, $start->day + $dayOfWeek);
+                    $dayName = $day->format('l');
+                    $dayOfMonth = $day->day;
+                    $days[] = [
+                        'day_name' => $dayName,
+                        'day_of_month' => $dayOfMonth,
+                        'total_amount' => 0,
+                    ];
+                }
+        
+                $orders = OrderDetail::select(
+                    DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d") as date'),
+                    DB::raw('SUM(total_amount) as total_amount')
+                )
+                ->whereBetween('created_at', [$start, $start->copy()->endOfWeek()])
+                ->where('is_deleted', 0)
+                ->groupBy('date')
+                ->get();
+        
+                foreach ($orders as $order) {
+                    $dayOfWeek = Carbon::parse($order->date)->dayOfWeek;
+                    $dayIndex = $dayOfWeek + 1; // since days array starts from 0
+                    $days[$dayIndex]['total_amount'] = $order->total_amount;
+                }
+        
+                $weeks['week ' . $week] = $days;
+                $start->addWeek();
+            }
+        
+            $result[$month] = $weeks;
+        }
+        
+        dd($result);
+        
 
-        $orderDetails = OrderDetail::select(DB::raw('CONCAT(YEAR(created_at), "-", WEEK(created_at)) as week'), DB::raw('SUM(total_amount) as total_amount'))
-        ->where('is_deleted', 0)
-        ->groupBy('week')
-        ->get();
-    
-        return $orderDetails;
 
-
-
-        // $orders = array();
-        // $order = Order::where([
-        //     'is_deleted' => 0,
-        //     'order_number' => 'vpm-xdd60kwhtub'
-        // ])->get();
-        //     foreach($order as $item) {
-        //         $items = array(
-        //             'id' => $item->id,
-        //             'product_name' => $item->product->product_name,
-        //             'product_image' => $item->product->product_image,
-        //             'quantity' => $item->quantity,
-        //             'total_price' => $item->total_price,
-        //             'price' => $item->product->price,
-        //         );
-                
-        //         array_push($orders, $items);
-        //     }
-        //     return response()->json([
-        //         'orders' => $orders
-        //     ]);
     }
 }
