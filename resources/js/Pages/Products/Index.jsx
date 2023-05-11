@@ -73,7 +73,7 @@ export default function Products(props) {
                         <div className="card">
                             <Table  openNew={openNew}  editProduct={editProduct} confirmDeleteProduct={confirmDeleteProduct} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} />
                         </div>
-                        <FormDialog product={product} data={data} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} productDialog={productDialog} setSubmitted={setSubmitted} setProductDialog={setProductDialog} />
+                        <FormDialog product={product} data={data} product_types={props.product_types} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} productDialog={productDialog} setSubmitted={setSubmitted} setProductDialog={setProductDialog} />
 
                         <Delete product={product} data={data} reset={reset} setData={setData} post={post} errors={errors} deleteProductsDialog={deleteProductsDialog} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} setDeleteProductsDialog={setDeleteProductsDialog} setDeleteProductDialog={setDeleteProductDialog} deleteProductDialog ={deleteProductDialog } />
                     </div>

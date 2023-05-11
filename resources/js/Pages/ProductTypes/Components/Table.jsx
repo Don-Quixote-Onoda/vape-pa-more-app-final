@@ -148,44 +148,16 @@ export default function Table(props) {
             sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
             <Column selectionMode="multiple" exportable={false}></Column>
-            {/* <Column
-                field="product_image"
-                header="Image"
-                body={imageBodyTemplate}
+            <Column
+                field="type"
+                header="Type"
             ></Column>
             <Column
-                field="product_name"
+                field="name"
                 header="Name"
                 sortable
                 style={{ minWidth: "12rem" }}
             ></Column>
-            <Column
-                field="price"
-                header="Price"
-                sortable
-                style={{ minWidth: "12rem" }}
-                body={numberFormatBody}
-            ></Column>
-            <Column
-                field="quantity"
-                header="Quantity"
-                sortable
-                style={{ minWidth: "12rem" }}
-            ></Column>
-            <Column
-                field="status"
-                header="Status"
-                sortable
-                body={statusTemplate}
-                style={{ minWidth: "12rem" }}
-            ></Column>
-            <Column
-                field="created_at"
-                header="Date Added"
-                sortable
-                style={{ minWidth: "2rem" }}
-                body={transactionDateBody}
-            ></Column> */}
             <Column
                 body={actionBodyTemplate}
                 exportable={false}

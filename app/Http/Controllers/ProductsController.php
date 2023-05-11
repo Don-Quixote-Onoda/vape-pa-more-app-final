@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\ProductType;
 use Illuminate\Support\Facades\Redirect;
 
 
@@ -16,7 +17,8 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::where('is_deleted', 0)->get();
-        return Inertia::render('Products/Index',['products' => $products]);
+        $product_types = ProductType::where('is_deleted', 0)->get();
+        return Inertia::render('Products/Index',['products' => $products, 'product_types' => $product_types]);
     }
 
     /**

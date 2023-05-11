@@ -37,6 +37,7 @@ export default function ProductTypes(props) {
         setProductType(emptyProductType);
         setSubmitted(false);
         setProductTypeDialog(true);
+        console.log(productTypeDialog);
     };
 
     const editProductType = (productType) => {

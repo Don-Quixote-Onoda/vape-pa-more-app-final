@@ -7,11 +7,11 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 
 
-export default function FormDialog({productDialog, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
+export default function FormDialog({productDialog, product_types, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
 
     const toast = useRef(null);
     const status = [{ name: "INSTOCK" }, { name: "LOWSTOCK" }, { name: "OUTOFSTOCK" }];
-
+    
     const hideDialog = () => {
         setSubmitted(false);
         setProductDialog(false);
@@ -20,7 +20,6 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
 
     const saveProduct = () => {
         setSubmitted(true);
-
         if (
             data.price &&
             data.product_name &&
@@ -101,6 +100,10 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
         const val = (e.target && e.target.value) || "";
         setData(name,val.name);
 
+    };
+
+    const onProductTypeChange = (e, name) => {
+        setData(name, e.target.value.id - 1);
     };
 
     const onInputNumberChange = (e, name) => {
@@ -225,6 +228,33 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                 {submitted && !data.status && (
                     <small className="p-error">Status is required.</small>
                 )}
+                
+            </div>
+            <div className="field mb-5">
+                <label htmlFor="email" className="font-bold">
+                    Status
+                </label>
+                <Dropdown
+                    value={ 
+                         product_types.map(product_type => {
+                            if(data.product_type == product_type.id)
+                                return product_type.name;
+                            return;
+                        }).filter(String).toString().replaceAll(',',"")
+                    }
+                    onChange={(e) => onProductTypeChange(e, "product_type")}
+                    options={product_types}
+                    optionLabel="name"
+                    editable
+                    placeholder="Select a Status"
+                    className={`w-full md:w-14rem ${classNames({
+                        "p-invalid": submitted && !data.status,
+                    })} `}
+                />
+                {submitted && !data.product_type && (
+                    <small className="p-error">Product Type is required.</small>
+                )}
+                
             </div>
         </Dialog>
     );
