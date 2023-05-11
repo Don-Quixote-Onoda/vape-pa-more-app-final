@@ -103,6 +103,18 @@ export default function Table(props) {
         </div>
     );
 
+    const numberFormatBody = (rowData) => {
+        return (
+            <span> {rowData['price'].toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}</span>
+        );
+    }
+
+    const numberFormatBodyTotalPrice = (rowData) => {
+        return (
+            <span> {rowData['total_price'].toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}</span>
+        );
+    }
+
     return (
         <DataTable
             ref={dt}
@@ -141,6 +153,7 @@ export default function Table(props) {
                 header="Price"
                 sortable
                 style={{ minWidth: "2rem" }}
+                body={numberFormatBody}
             ></Column>
             <Column
                 field="quantity"
@@ -153,6 +166,7 @@ export default function Table(props) {
                 header="Total Price"
                 sortable
                 style={{ minWidth: "2rem" }}
+                body={numberFormatBodyTotalPrice}
             ></Column>
             <Column
                 body={actionBodyTemplate}

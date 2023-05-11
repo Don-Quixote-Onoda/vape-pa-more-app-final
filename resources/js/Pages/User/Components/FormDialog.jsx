@@ -360,6 +360,7 @@ export default function FormDialog({userDialog, setSubmitted, setUserDialog, sub
                     onChange={(e) => onInputChange(e, "password")}
                     required
                     autoFocus
+                    type="password"
                     className={classNames({
                         "p-invalid": submitted && !data.password && !data.id,
                     })}
@@ -379,6 +380,7 @@ export default function FormDialog({userDialog, setSubmitted, setUserDialog, sub
                     onChange={(e) => confirmPassword(e, "confirm_password")}
                     required
                     autoFocus
+                    type="password"
                     className={classNames({
                         "p-invalid": submitted && !data.confirm_password && !data.id, 
                     })}

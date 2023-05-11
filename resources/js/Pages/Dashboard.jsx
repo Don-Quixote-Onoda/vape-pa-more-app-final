@@ -19,7 +19,7 @@ export default function Dashboard(props) {
     const [product, setProduct] = useState({});
     const [showProductModal, setShowProductModal] = useState(false);
     const [orders, setOrders] = useState([]);
-    const [quantity, setQuantity] = useState(null);
+    const [quantity, setQuantity] = useState(0);
     const [isSubmitted, setSubmitted] = useState(false);
     const [totalAmount, setTotalAmount] = useState(0);
     const [orderNumber, setOrderNumber] = useState(null);
@@ -31,22 +31,23 @@ export default function Dashboard(props) {
 
     useEffect(() => {
             setProducts(props.all_products);
+            console.log(products);
     }, []); 
 
+    const productStatus = [
+        'INSTOCK',
+        'LOWSTOCK',
+        'OUTOFSTOCK'
+    ];
+
     const getSeverity = (product) => {
-        switch (product.status) {
-            case "INSTOCK":
-                return "success";
 
-            case "LOWSTOCK":
-                return "warning";
-
-            case "OUTOFSTOCK":
-                return "danger";
-
-            default:
-                return null;
-        }
+        if(product.quantity > 5)
+            return "success";
+        else if(product.quantity <= 5 && product.quantity >= 1)
+            return "warning";
+        else 
+            return "danger";
     };
 
     const setSelectedProduct = (selectedProduct) => {
@@ -60,20 +61,52 @@ export default function Dashboard(props) {
     const saveOrder = () => {
         setSubmitted(true);
 
+        let orderExists = false;
+        let orderIndex = null;
+        let updatedQuantity = null;
+
+        let newOrder =  {
+            image: product.product_image,
+            name: product.product_name,
+            quantity: quantity,
+            subtotal: quantity * product.price,
+            product_id: product.id
+        }
         if (quantity && quantity > 0) {
-            setOrders([
-                ...orders,
+            orders.forEach((order, index) => {
+                if(order.product_id === product.id)
                 {
-                    image: product.product_image,
-                    name: product.product_name,
-                    quantity: quantity,
-                    subtotal: quantity * product.price,
-                    product_id: product.id
-                },
-            ]);
+                    orderExists = true;
+                    orderIndex = index;
+                    updatedQuantity = quantity + order.quantity;
+                }
+            });
+            products.forEach(item => {
+                if(item.id === product.id)
+                {
+                    item.quantity -= quantity;
+                }
+            });
+            if(orderExists) {
+                setOrders(prevOrder => {
+                    const updatedOrder = [...prevOrder];
+                    updatedOrder[orderIndex] = {
+                      ...updatedOrder[orderIndex],
+                      quantity: updatedQuantity
+                    };
+                    return updatedOrder;
+                });
+            }
+            else {
+                setOrders([
+                ...orders,
+                newOrder,
+                ]);
+            }
+            
             setSubmitted(false);
             setShowProductModal(false);
-            setQuantity(null);
+            setQuantity(0);
         }
     };
 
@@ -87,12 +120,21 @@ export default function Dashboard(props) {
     });
 
     const removeOrder = (index) => {
+        let product = orders[index];
+        console.log(product);
+
+        products.forEach(item => {
+            if(item.id === product.product_id)
+            {
+                item.quantity += product.quantity;
+            }
+        });
         setOrders([...orders.slice(0, index), ...orders.slice(index + 1)]);
     };
 
     const handleCloseOrder = () => {
         setShowProductModal(false);
-        setQuantity(null);
+        setQuantity(0);
         setSubmitted(false);
     };
 
@@ -184,14 +226,28 @@ export default function Dashboard(props) {
 
     const [isOutOfStock, setOutOfStock] = useState(false);
 
-    const handleSetQuantity = (val) => {
-      if(val > product.quantity) {
-        setOutOfStock(true);
-      }
-      else {
-        setOutOfStock(false);
-        setQuantity(val);
-      }
+    const handleSetQuantity = () => {
+    //   if(val > product.quantity) {
+    //     setOutOfStock(true);
+    //   }
+    //   else {
+    //     setOutOfStock(false);
+    //     setQuantity(val);
+    //   }
+    
+    }
+
+    const addQuantity = (product) => {
+        let totalQuantity = product.quantity;
+        if(quantity < totalQuantity)
+            setQuantity(quantity + 1);
+
+        
+    }
+
+    const minusQuantity = () => {
+        if(quantity > 0)
+            setQuantity(quantity - 1);
     }
 
     return (
@@ -219,7 +275,7 @@ export default function Dashboard(props) {
                                 className="flex dashboard-product-card flex-col pb-2 bg-stone-100 shadow-md rounded border-gray-900 items-center gap-3 py-5 p-2"
                             >
                                 <Tag
-                                    value={product.status}
+                                    value={product.quantity > 5 ? productStatus[0] : product.quantity <= 5 && product.quantity >= 1 ? productStatus[1] : productStatus[2]}
                                     className="self-start"
                                     severity={getSeverity(product)}
                                 ></Tag>
@@ -235,14 +291,25 @@ export default function Dashboard(props) {
                                     </div>
                                 </div>
                                 <div className="flex w-full items-center justify-between p-2">
+                                    <div className="flex flex-col gap-3">
                                     <p className="flex flex-col">
                                         <span className="text-sm font-bold">
                                             Price
                                         </span>
                                         <span className="text-xs ">
-                                        ₱{product.price}
+                                        {product.price.toLocaleString("en-PH", { style: 'currency', currency: 'PHP' }) }
+                                        
                                         </span>
                                     </p>
+                                    <p className="flex flex-col">
+                                        <span className="text-sm font-bold">
+                                            Qty
+                                        </span>
+                                        <span className="text-xs ">
+                                        {product.quantity}
+                                        </span>
+                                    </p>
+                                    </div>
                                     <Button
                                         icon="pi pi-shopping-cart"
                                         style={{
@@ -254,8 +321,7 @@ export default function Dashboard(props) {
                                             setSelectedProduct(product)
                                         }
                                         disabled={
-                                            product.status ===
-                                            "OUTOFSTOCK"
+                                            product.quantity === 0
                                         }
                                     ></Button>
                                 </div>
@@ -303,7 +369,7 @@ export default function Dashboard(props) {
                                                     }}
                                                 ></i>
                                                 <p className="text-end font-bold">
-                                                    ₱ {order.subtotal}.00
+                                                    {order.subtotal.toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}
                                                 </p>
                                                 <p className="text-end">
                                                     Qty: {order.quantity}
@@ -316,7 +382,7 @@ export default function Dashboard(props) {
                                 <div className="flex justify-between py-5">
                                     <h4>Total:</h4>
                                     <p className="text-end font-bold">
-                                        ₱ {totalAmount}.00
+                                        {totalAmount.toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}
                                     </p>
                                 </div>
                                 <Button
@@ -367,11 +433,14 @@ export default function Dashboard(props) {
                     <div className="flex flex-col gap-3 w-full items-center justify-between p-2">
                         <div className="flex w-full flex-col self-start">
                             <span className="text-md font-bold">Quatity</span>
-                            <InputNumber
-                                value={quantity}
-                                onChange={(e) => handleSetQuantity(e.value)}
-                            />
-                            {isSubmitted && quantity == null && (
+                            <div className="flex justify-between my-5">
+                            <i className="pi pi-minus" style={{ color: 'slateblue' }}  onClick={e => minusQuantity(product)}></i>
+
+                                <p>{quantity}</p>
+                                <i className="pi pi-plus" style={{ color: 'slateblue' }} onClick={e => addQuantity(product)}></i>
+
+                            </div>
+                            {isSubmitted && quantity == 0 && (
                                 <span className="text-red-500 text-xs py-2">
                                     Quantity is required!
                                 </span>

@@ -27,6 +27,12 @@ export default function ViewDialog({
         setData(order);
     };
 
+    const numberFormat = (amount) => {
+        const result = parseFloat(amount+"").toLocaleString("en-PH", { style: 'currency', currency: 'PHP' });
+        return (
+            <span>{result}</span>
+        );
+    }
     return (
         <Dialog
             visible={orderDialog}
@@ -55,7 +61,7 @@ export default function ViewDialog({
 
                 <div className="flex justify-between mb-3">
                     <p className="text-xl mb-3 font-bold">Price: </p>
-                    <p className="text-xl mb-3">₱ {data.price}</p>
+                    <p className="text-xl mb-3">{numberFormat(data.price)}</p>
                 </div>
                 <div className="flex justify-between mb-3">
                     <p className="text-xl mb-3 font-bold">Quantity: </p>
@@ -63,7 +69,7 @@ export default function ViewDialog({
                 </div>
                 <div className="flex justify-between mb-3">
                     <p className="text-xl mb-3 font-bold">Total Price: </p>
-                    <p className="text-xl mb-3">₱ {data.total_price}</p>
+                    <p className="text-xl mb-3">{numberFormat(data.total_price)}</p>
                 </div>
             </div>
         </Dialog>

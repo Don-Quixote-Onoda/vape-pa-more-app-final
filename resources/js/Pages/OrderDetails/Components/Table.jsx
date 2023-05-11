@@ -13,6 +13,9 @@ export default function Table(props) {
     const [sortField, setSortField] = useState('id');
     const [sortOrder, setSortOrder] = useState(-1);
 
+    useEffect(() => {
+        console.log(orderDetails);
+    });
     const onSort = (e) => {
         setSortField(e.sortField);
         setSortOrder(e.sortOrder);
@@ -51,6 +54,20 @@ export default function Table(props) {
             </React.Fragment>
         );
     };
+
+    const userBody = (rowData) => {
+        return (
+            <span style={{textTransform: 'capitalize'}}>{rowData.user.name}</span>
+        )
+    }
+
+    const transactionDateBody = (rowData) => {
+        const date = new Date(rowData.transaction_date);
+        const formattedDate = date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+        return (
+            <span style={{textTransform: 'capitalize'}}>{formattedDate}</span>
+        )
+    }
 
     const cols = [
         { field: "id", header: "ID" },
@@ -103,6 +120,22 @@ export default function Table(props) {
         </div>
     );
 
+    useEffect(() => {
+        console.log(orderDetails);
+    })
+
+    const numberFormatBody = (rowData) => {
+        return (
+            <span> {rowData['total_amount'].toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}</span>
+        );
+    }
+
+    const numberFormatBodyTotalPrice = (rowData) => {
+        return (
+            <span> {rowData['cash'].toLocaleString("en-PH", { style: 'currency', currency: 'PHP' })}</span>
+        );
+    }
+
     return (
         <DataTable
             ref={dt}
@@ -130,24 +163,35 @@ export default function Table(props) {
                 header="Total Amount"
                 sortable
                 style={{ minWidth: "2rem" }}
+                body={numberFormatBody}
             ></Column>
             <Column
                 field="cash"
                 header="Cash"
                 sortable
                 style={{ minWidth: "2rem" }}
+                body={numberFormatBodyTotalPrice}
             ></Column>
             <Column
                 field="change"
-                header="Change"
+                header="User"
                 sortable
                 style={{ minWidth: "2rem" }}
+                body={userBody}
+            ></Column>
+            <Column
+                field="transaction_date"
+                header="Date of Transaction"
+                sortable
+                style={{ minWidth: "2rem" }}
+                body={transactionDateBody}
             ></Column>
             <Column
                 body={actionBodyTemplate}
                 exportable={false}
                 style={{ minWidth: "10rem", display: "flex", gap: "0.5rem" }}
             ></Column>
+            
         </DataTable>
     );
 }

@@ -18,6 +18,13 @@ export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDet
         setOrders([]);
     };
 
+    const numberFormat = (amount) => {
+        const result = parseFloat(amount+"").toLocaleString("en-PH", { style: 'currency', currency: 'PHP' });
+        return (
+            <span>{result}</span>
+        );
+    }
+
     return (
         <Dialog
             visible={orderDetailDialog}
@@ -61,7 +68,7 @@ export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDet
                                             <div className="self-end">
                                                 
                                                 <p className="text-end font-bold">
-                                                    ₱ {order.total_price}.00
+                                                    {numberFormat(order.total_price)}
                                                 </p>
                                                 <p className="text-end">
                                                     Qty: {order.quantity}
@@ -74,7 +81,7 @@ export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDet
                                 <div className="flex justify-between py-5">
                                     <h4>Total:</h4>
                                     <p className="text-end font-bold">
-                                        ₱ {data.total_amount}.00
+                                        {numberFormat(data.total_amount)}
                                     </p>
                                 </div>
                             </main>
@@ -91,19 +98,13 @@ export default function ViewDialog({orderDetailDialog, setSubmitted, setOrderDet
                        </div>
                         <div className="flex w-full flex-col self-start">
                             <span className="text-md font-bold">Cash Amount</span>
-                            <InputNumber
-                                disabled
-                                value={data.cash}
-                            />
+                            <h1>{numberFormat(data.cash)}</h1>
                            
                         </div>
                         <div className="flex w-full flex-col self-start">
                         <span className="text-md font-bold">Change</span>
                             
-                            <InputNumber
-                                value={data.change}
-                                disabled
-                            />
+                        <h1>{numberFormat(data.change)}</h1>
                             
                         </div>
                         <Button

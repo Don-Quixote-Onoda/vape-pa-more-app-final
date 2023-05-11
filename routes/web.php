@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
+use App\Http\Controllers\ProductTypesController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLogsController;
 use App\Http\Controllers\UsersController;
@@ -52,6 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('products', ProductsController::class);
+    Route::resource('products-types', ProductTypesController::class);
     Route::resource('order-details', OrderDetailsController::class);
     Route::resource('orders', OrdersController::class);
     Route::resource('payments', PaymentsController::class);

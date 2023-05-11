@@ -41,7 +41,9 @@ class OrderDetailsController extends Controller
                 'cash' => $item->cash,
                 'change' => $item->change,
                 'order_number' => $item->order_number,
-                'orders'=> $orders
+                'orders'=> $orders,
+                'user' => $item->user,
+                'transaction_date' => $item->created_at
             ));
         }
 

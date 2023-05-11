@@ -11,6 +11,9 @@ export default function Table(props) {
     const [globalFilter, setGlobalFilter] = useState(null);
     const dt = useRef(null);
 
+    useEffect(() => {
+        console.log(payments);
+    });
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
