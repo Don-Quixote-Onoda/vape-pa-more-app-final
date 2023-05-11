@@ -36,7 +36,7 @@ use App\Models\Product;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard',[
-        'all_products' => Product::all() 
+        'all_products' => Product::where('is_deleted', 0)->get() 
         ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
