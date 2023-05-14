@@ -166,13 +166,6 @@ export default function Table(props) {
                 body={numberFormatBody}
             ></Column>
             <Column
-                field="cash"
-                header="Cash"
-                sortable
-                style={{ minWidth: "2rem" }}
-                body={numberFormatBodyTotalPrice}
-            ></Column>
-            <Column
                 field="change"
                 header="User"
                 sortable

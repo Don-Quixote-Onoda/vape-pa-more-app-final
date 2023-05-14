@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventoryManagementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLogsController;
 use App\Http\Controllers\UsersController;
 use App\Models\Product;
+use App\Models\ProductType;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +38,8 @@ use App\Models\Product;
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard',[
-        'all_products' => Product::where('is_deleted', 0)->get() 
+        'all_products' => Product::where('is_deleted', 0)->get() ,
+        'product_types' => ProductType::all()
         ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -60,6 +63,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductsController::class);
     Route::resource('user-logs',UserLogsController::class);
     Route::resource('users', UsersController::class);
+    Route::resource('inventory-management', InventoryManagementController::class);
     Route::get('summary-reports', [ReportsController::class, 'index'])->name('summary-reports');
 });
 

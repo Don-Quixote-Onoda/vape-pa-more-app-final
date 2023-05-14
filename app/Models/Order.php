@@ -19,7 +19,8 @@ class Order extends Model
         'order_number',
         'quantity',
         'is_deleted',
-        'total_price'
+        'total_price',
+        'product_type_id'
     ];
 
     public function product() {

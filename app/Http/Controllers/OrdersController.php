@@ -45,6 +45,7 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
+
         foreach($request->orders as $item) {
             $order = new Order;
             $order->create([
@@ -53,6 +54,8 @@ class OrdersController extends Controller
                 'order_number' => $request->order_details['order_number'],
                 'quantity' => $item['quantity'],
                 'total_price' => $item['subtotal'],
+            'product_type_id'=> 1,
+
                 'is_deleted' => 0
             ]);
             $product = Product::find($item['product_id']);

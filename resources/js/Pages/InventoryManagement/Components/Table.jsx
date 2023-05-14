@@ -6,14 +6,10 @@ import { Button } from "primereact/button";
 import { Link, useForm, usePage } from "@inertiajs/react";
 
 export default function Table(props) {
-    const products = usePage().props.products;
+    const product_inventories = usePage().props.product_inventories;
     const user_role = usePage().props.auth.user.role;
     const [sortField, setSortField] = useState('id');
     const [sortOrder, setSortOrder] = useState(-1);
-
-    useEffect(() => {
-        console.log(products);
-    })
 
     const onSort = (e) => {
         setSortField(e.sortField);
@@ -75,8 +71,8 @@ export default function Table(props) {
             import("jspdf-autotable").then(() => {
                 const doc = new jsPDF.default(0, 0);
                 let rand = Math.random();
-                doc.autoTable(exportColumns, products);
-                doc.save("products"+rand+".pdf");
+                doc.autoTable(exportColumns, product_inventories);
+                doc.save("product_inventories"+rand+".pdf");
             });
         });
     };
@@ -134,7 +130,7 @@ export default function Table(props) {
     return (
         <DataTable
             ref={dt}
-            value={products}
+            value={product_inventories}
             selection={props.selectedProducts}
             onSelectionChange={(e) => props.setSelectedProducts(e.value)}
             dataKey="id"
@@ -149,38 +145,25 @@ export default function Table(props) {
         >
             <Column selectionMode="multiple" exportable={false}></Column>
             <Column
-                field="product_image"
-                header="Image"
-                body={imageBodyTemplate}
-            ></Column>
-            <Column
-                field="product_name"
+                field="name"
                 header="Name"
                 sortable
                 style={{ minWidth: "12rem" }}
             ></Column>
             <Column
-                field="price"
-                header="Price"
-                sortable
-                style={{ minWidth: "12rem" }}
-                body={numberFormatBody}
-            ></Column>
-            <Column
                 field="quantity"
-                header="Total Quantity"
+                header="Quantity"
+                sortable
+                style={{ minWidth: "12rem" }}
+            ></Column>
+             <Column
+                field="product_type_name"
+                header="Product Type"
                 sortable
                 style={{ minWidth: "12rem" }}
             ></Column>
             <Column
-                field="status"
-                header="Status"
-                sortable
-                body={statusTemplate}
-                style={{ minWidth: "12rem" }}
-            ></Column>
-            <Column
-                field="created_at"
+                field="date_added"
                 header="Date Added"
                 sortable
                 style={{ minWidth: "2rem" }}

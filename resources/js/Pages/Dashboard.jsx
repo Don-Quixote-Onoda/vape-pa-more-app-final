@@ -12,6 +12,7 @@ import { useForm } from "@inertiajs/react";
 import { router } from '@inertiajs/react'
 import axios from 'axios';
 import dashboard_styles from './Dashboard.css';
+import { classNames } from "primereact/utils";
 
 export default function Dashboard(props) {
     const [products, setProducts] = useState([]);
@@ -26,18 +27,20 @@ export default function Dashboard(props) {
     const [showOrderDetailModal, setShowOrderDetailModal] = useState(false);
     const [totalChange, setTotalChange] = useState(null);
     const [cashAmount, setCashAmount] = useState(null);
+    
 
     const { data, setData, post, reset, processing, errors } = useForm(JSON.parse(localStorage.getItem('items')));
 
     useEffect(() => {
             setProducts(props.all_products);
-            console.log(products);
+            console.log(props);
     }, []); 
 
+
     const productStatus = [
-        'INSTOCK',
-        'LOWSTOCK',
-        'OUTOFSTOCK'
+        'In Stock',
+        'Low Stock',
+        'Out of Stock'
     ];
 
     const getSeverity = (product) => {
@@ -118,6 +121,11 @@ export default function Dashboard(props) {
         setTotalAmount(total);
 
     });
+
+    const onProductTypeChange = (e, name) => {
+        // setData(name, e.target.value.id);
+
+    };
 
     const removeOrder = (index) => {
         let product = orders[index];
@@ -396,7 +404,7 @@ export default function Dashboard(props) {
                                     }
                                     onClick={() => showOrderDetails()}
                                 >
-                                    Checkout
+                                    Pay
                                 </Button>
                             </main>
                         )}
@@ -430,7 +438,7 @@ export default function Dashboard(props) {
                             alt={product.name}
                         />
                     </div>
-                    <div className="flex flex-col gap-3 w-full items-center justify-between p-2">
+                    <div className="flex flex-col gap-3 w-full items-start justify-between p-2">
                         <div className="flex w-full flex-col self-start">
                             <span className="text-md font-bold">Quatity</span>
                             <div className="flex justify-between my-5">
@@ -457,7 +465,22 @@ export default function Dashboard(props) {
                                 </span>
                             )}
                         </div>
+                        <div className="field mb-5">
+                <label htmlFor="email" className="font-bold mb-3">
+                    Product Type
+                </label>
+                <br />
+                {
+                    props.product_types.map(type => (
+                        <button className="mt-4 mr-2 bg-blue-800 px-4 py-1 text-white rounded">{type.name}</button>
 
+                    ))
+                }
+                {/* {submitted && !data.product_type && (
+                    <small className="p-error">Product Type is required.</small>
+                )} */}
+                
+            </div>
                         <Button
                             style={{ "justify-content": "center" }}
                             className="text-center"
@@ -473,7 +496,7 @@ export default function Dashboard(props) {
                 visible={showOrderDetailModal}
                 style={{ width: "30rem" }}
                 breakpoints={{ "960px": "75vw", "641px": "90vw" }}
-                header="Order Details"
+                header="Checkout Orders"
                 modal
                 className="p-fluid"
                 // footer={productDialogFooter}
@@ -587,7 +610,7 @@ export default function Dashboard(props) {
                             disabled={product.inventoryStatus === "OUTOFSTOCK"}
                             onClick={() => saveOrderDetails()}
                         >
-                            Save
+                            Pay
                         </Button>
                     </div>
                 </div>

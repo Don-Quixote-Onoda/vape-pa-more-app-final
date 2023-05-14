@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InventoryManagementController;
 use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
@@ -37,5 +38,6 @@ Route::post('delete_product', [ProductsController::class, 'destroy'])->name('del
 Route::post('delete_order', [OrdersController::class, 'destroy'])->name('deleteOrder');
 Route::post('delete_orderdetails', [OrderDetailsController::class, 'destroy'])->name('deleteOrderDetails');
 Route::post('delete_payment', [PaymentsController::class, 'destroy'])->name('deletePayment');
+Route::post('saveInventoryManagement', [InventoryManagementController::class, 'store'])->name('saveInventoryManagement');
 // Route::get('user-logs', [UserLogsController::class, 'index']);
 

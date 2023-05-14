@@ -72,6 +72,8 @@ export default function ViewDialog({
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('Vape Pa More Reciept ('+formattedDate+').pdf');
       });
+      hideDialog();
+      
     }
 
     const getCurrentDateFormat = () => {

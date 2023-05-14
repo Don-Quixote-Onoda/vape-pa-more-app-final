@@ -9,12 +9,11 @@ import { useForm } from "@inertiajs/react";
 export default function Products(props) {
 
     let emptyProduct = {
-        id: null,
-        product_name: null,
+        product_id: null,
+        product_type: null,
         product_image: null,
-        price: null,
-        status: null,
         quantity: null,
+        id: null
     };
 
     const [productDialog, setProductDialog] = useState(false);
@@ -25,14 +24,17 @@ export default function Products(props) {
     const [submitted, setSubmitted] = useState(false);
     const toast = useRef(null);
     const { data, setData, post, reset, processing, errors } = useForm({
-        id: null,
-        product_name: null,
+        product_id: null,
+        product_type: null,
         product_image: null,
-        price: null,
-        status: null,
         quantity: null,
+        id: null
     });
     const [type, setType] = useState('default');
+
+    useEffect(() => {
+        console.log(props);
+    })
 
     const openNew = () => {
         setProduct(emptyProduct);
@@ -75,7 +77,7 @@ export default function Products(props) {
                         <div className="card">
                             <Table  openNew={openNew}  editProduct={editProduct} confirmDeleteProduct={confirmDeleteProduct} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} />
                         </div>
-                        <FormDialog type={type} product={product} data={data} product_types={props.product_types} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} productDialog={productDialog} setSubmitted={setSubmitted} setProductDialog={setProductDialog} />
+                        <FormDialog products={props.products} type={type} product={product} data={data} product_types={props.product_types} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} productDialog={productDialog} setSubmitted={setSubmitted} setProductDialog={setProductDialog} />
 
                         <Delete product={product} data={data} reset={reset} setData={setData} post={post} errors={errors} deleteProductsDialog={deleteProductsDialog} setSelectedProducts={setSelectedProducts} selectedProducts={selectedProducts} setDeleteProductsDialog={setDeleteProductsDialog} setDeleteProductDialog={setDeleteProductDialog} deleteProductDialog ={deleteProductDialog } />
                     </div>

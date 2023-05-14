@@ -7,7 +7,7 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 
 
-export default function FormDialog({type, productDialog, product_types, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
+export default function FormDialog({products, type, productDialog, product_types, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
 
     const toast = useRef(null);
     const status = [{ name: "INSTOCK" }, { name: "LOWSTOCK" }, { name: "OUTOFSTOCK" }];
@@ -21,17 +21,16 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
     const saveProduct = () => {
         setSubmitted(true);
         if (
-            data.price &&
-            data.product_name &&
-            data.product_image &&
             data.quantity &&
-            data.status
+            data.product_id &&
+            data.product_type &&
+            data.quantity
         ) {
             if (
-                data.price &&
-                data.product_name &&
                 data.quantity &&
-                data.status &&
+                data.product_id &&
+                data.product_type &&
+                data.quantity &&
                 data.id
             ) {
                
@@ -46,7 +45,7 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
                     });
                     
             } else {
-                post(route('saveProduct'), {
+                post(route('saveInventoryManagement'), {
                     forceFormData: true,
                     onSuccess: () =>{
                         setProductDialog(false);
@@ -66,23 +65,10 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
             }
         }
 
-
+        console.log(data);
         
     };
 
-
-    const findIndexById = (id) => {
-        let index = -1;
-
-        for (let i = 0; i < products.length; i++) {
-            if (products[i].id === id) {
-                index = i;
-                break;
-            }
-        }
-
-        return index;
-    };
 
     const productDialogFooter = (
         <React.Fragment>
@@ -102,8 +88,14 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
 
     };
 
+    const onProductChange = (e, name) => {
+        setData(name, e.target.value.id);
+
+    };
+
     const onProductTypeChange = (e, name) => {
-        setData(name, e.target.value.id - 1);
+        setData(name, e.target.value.id);
+
     };
 
     const onInputNumberChange = (e, name) => {
@@ -153,49 +145,40 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
                 )}
             </div>
             }
-            <div className="field">
-                <label htmlFor="firstname" className="font-bold">
+            <div className="field mb-5">
+                <label htmlFor="email" className="font-bold">
                     Product Name
                 </label>
-                <InputText
-                    id="product_name"
-                    value={data.product_name}
-                    onChange={(e) => onInputChange(e, "product_name")}
-                    required
-                    autoFocus
-                    className={classNames({
-                        "p-invalid": submitted && !data.product_name,
-                    })}
+                <Dropdown
+                    value={ 
+                         products.map(product => {
+                            if(data.product_id == product.id)
+                            {
+                                return product.product_name;
+                            }
+                            return;
+                        }).filter(String).toString().replaceAll(',',"")
+                    }
+                    onChange={(e) => onProductChange(e, "product_id")}
+                    options={products}
+                    optionLabel="product_name"
+                    editable
+                    placeholder="Select a Product Name"
+                    className={`w-full md:w-14rem ${classNames({
+                        "p-invalid": submitted && !data.product_id,
+                    })} `}
                 />
-                {submitted && !data.product_name && (
-                    <small className="p-error">Product Name is required.</small>
+                {submitted && !data.product_id && (
+                    <small className="p-error">Product Type is required.</small>
                 )}
-            </div>
-            <div className="field mb-5">
-                <label htmlFor="price" className="font-bold">
-                    Price
-                </label>
-                <InputNumber
-                    id="price"
-                    value={data.price}
-                    onChange={(e) => onInputNumberChange(e, "price")}
-                    useGrouping={false}
-                    required
-                    autoFocus
-                    className={classNames({
-                        "p-invalid": submitted && !data.price,
-                    })}
-                />
-                {submitted && !data.price && (
-                    <small className="p-error">Price is required.</small>
-                )}
+                
             </div>
             <div className="field mb-5">
                 <label htmlFor="price" className="font-bold">
                     Quantity
                 </label>
                 <InputNumber
-                    id="quantity"
+                    id="price"
                     value={data.quantity}
                     onChange={(e) => onInputNumberChange(e, "quantity")}
                     useGrouping={false}
@@ -209,30 +192,7 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
                     <small className="p-error">Quantity is required.</small>
                 )}
             </div>
-            <div className="field mb-5">
-                <label htmlFor="email" className="font-bold">
-                    Status
-                </label>
-                <Dropdown
-                    value={
-                        (data.status) == 'INSTOCK' ? 'INSTOCK' : 
-                        (data.status) == 'LOWSTOCK' ? 'LOWSTOCK' : 'OUTOFSTOCK'
-                    }
-                    onChange={(e) => onStatusChange(e, "status")}
-                    options={status}
-                    optionLabel="name"
-                    editable
-                    placeholder="Select a Status"
-                    className={`w-full md:w-14rem ${classNames({
-                        "p-invalid": submitted && !data.status,
-                    })} `}
-                />
-                {submitted && !data.status && (
-                    <small className="p-error">Status is required.</small>
-                )}
-                
-            </div>
-            {/* <div className="field mb-5">
+           <div className="field mb-5">
                 <label htmlFor="email" className="font-bold">
                     Product Type
                 </label>
@@ -248,16 +208,17 @@ export default function FormDialog({type, productDialog, product_types, setSubmi
                     options={product_types}
                     optionLabel="name"
                     editable
-                    placeholder="Select a Status"
+                    placeholder="Select a Product Type"
                     className={`w-full md:w-14rem ${classNames({
-                        "p-invalid": submitted && !data.status,
+                        "p-invalid": submitted && !data.product_type,
                     })} `}
                 />
                 {submitted && !data.product_type && (
                     <small className="p-error">Product Type is required.</small>
                 )}
                 
-            </div> */}
+            </div>
+            
         </Dialog>
     );
 }

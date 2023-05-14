@@ -19,7 +19,7 @@ class OrderDetail extends Model
         'change',
         'user_id',
         'order_number',
-        'is_deleted'
+        'is_deleted',
     ];
 
     public function payment() {

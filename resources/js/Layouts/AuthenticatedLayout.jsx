@@ -83,6 +83,15 @@ export default function Authenticated({ auth, header, children }) {
                         }
                         {
                             auth.user.role == 1 && <NavLink
+                            href={route("inventory-management.index")}
+                            active={route().current("inventory-management.index")}
+                        >
+                           <i className="pi pi-microsoft" style={{ color: 'currentColor' }}></i>
+                            <span className="ml-4">Inventory Management</span>
+                        </NavLink>
+                        }
+                        {
+                            auth.user.role == 1 && <NavLink
                             href={route("orders.index")}
                             active={route().current("orders.index")}
                         >
