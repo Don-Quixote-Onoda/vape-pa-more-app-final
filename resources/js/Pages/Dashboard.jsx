@@ -60,6 +60,8 @@ export default function Dashboard(props) {
 
     const handleOrders = () => {};
     
+    const [productTypeName, setProductTypeName] = useState(null);
+    const [productType_type, setProductType_type] = useState(null);
 
     const saveOrder = () => {
         setSubmitted(true);
@@ -73,8 +75,11 @@ export default function Dashboard(props) {
             name: product.product_name,
             quantity: quantity,
             subtotal: quantity * product.price,
-            product_id: product.id
+            product_id: product.id,
+            product_type_name: productTypeName,
+            selection: productType_type,
         }
+        console.log(newOrder);
         if (quantity && quantity > 0) {
             orders.forEach((order, index) => {
                 if(order.product_id === product.id)
@@ -110,6 +115,10 @@ export default function Dashboard(props) {
             setSubmitted(false);
             setShowProductModal(false);
             setQuantity(0);
+            setProductTypeName(null);
+            setProductType_type(null);
+            setSelectedProductSelectionID(0);
+            setSelectedProductTypeNameID(0);
         }
     };
 
@@ -232,6 +241,28 @@ export default function Dashboard(props) {
 
     }
 
+    const [selectedProductTypeNameID, setSelectedProductTypeNameID] = useState(0);
+    const [selection, setSelection] = useState(null);
+
+    const handleProductTypeName = (item) => {
+        setSelectedProductTypeNameID(item.id);
+        setProductTypeName(item.name);
+
+        if(item.name.toLowerCase() == 'juice')
+            setSelection(props.product_types.filter(type => {
+                return type;
+            }));
+        else 
+            setSelection(null);
+    }
+
+    const [selectedProductSelectionID, setSelectedProductSelectionID] = useState(0);
+
+    const handleProductSelection = (item) => {
+        setSelectedProductSelectionID(item.id);
+        setProductType_type(item.type);
+        
+    }
     const [isOutOfStock, setOutOfStock] = useState(false);
 
     const handleSetQuantity = () => {
@@ -472,8 +503,13 @@ export default function Dashboard(props) {
                 <br />
                 {
                     props.product_types.map(type => (
-                        <button className="mt-4 mr-2 bg-blue-800 px-4 py-1 text-white rounded">{type.name}</button>
-
+                        <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductTypeNameID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductTypeName(type)}>{type.name}</button>
+                    ))
+                }
+    <br />
+                {
+                    selection !== null && props.product_types.map(type => (
+                        <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductSelectionID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductSelection(type)}>{type.type}</button>
                     ))
                 }
                 {/* {submitted && !data.product_type && (

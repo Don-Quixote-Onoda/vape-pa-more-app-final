@@ -42,7 +42,7 @@ export default function Table(props) {
                     rounded
                     outlined
                     className="mr-2"
-                    onClick={() => props.editProduct(rowData)}
+                    onClick={() => props.editProductType(rowData)}
                 />
                 {
                     user_role == 1 && <Button
@@ -50,7 +50,7 @@ export default function Table(props) {
                     rounded
                     outlined
                     severity="danger"
-                    onClick={() => props.confirmDeleteProduct(rowData)}
+                    onClick={() => props.confirmDeleteProductType(rowData)}
                 />
                 }
             </React.Fragment>
@@ -147,7 +147,6 @@ export default function Table(props) {
             header={header}
             sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
-            <Column selectionMode="multiple" exportable={false}></Column>
             <Column
                 field="type"
                 header="Type"

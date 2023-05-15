@@ -6,10 +6,37 @@ import { CategoryScale } from "chart.js";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { Button } from "primereact/button";
+import { CSVLink } from 'react-csv';
+
 export default function SummaryReports(props) {
     const [dailySale, setDailySale] = useState([]);
     const [weeklySale, setWeeklySale] = useState([]);
     const [monthlySale, setMonthlySale] = useState([]);
+
+    const ExportDailyIncome = () => {
+        let data = [
+        dailySale.map(item => item.day),
+        dailySale.map(item => item.total_amount),
+    ];
+        return data;
+    }
+
+    const ExportWeeklyIncome = () => {
+        let data = [
+        weeklySale.map(item => item.week),
+        weeklySale.map(item => item.total_amount),
+    ];
+        return data;
+    }
+
+    const ExportMonthlyIncome = () => {
+        let data = [
+        monthlySale.map(item => item.month),
+        monthlySale.map(item => item.total_amount),
+    ];
+        return data;
+    }
+
     useEffect(() => {
         // Get current month name
         const monthNames = [
@@ -80,9 +107,11 @@ export default function SummaryReports(props) {
         setDailySale(filteredDailySale);
         setWeeklySale(filterWeeklySale);
         setMonthlySale(filterMonthlySale);
-        
+        console.log(filterWeeklySale);
     },[]),
         [];
+
+    
     const dailySales = {
         labels: dailySale.map(data => data.day),
         datasets: [
@@ -222,12 +251,21 @@ export default function SummaryReports(props) {
                         <div className="w-full overflow-x-auto card flex p-5 flex-wrap gap-5 flex-row ">
                             <div style={{width: 'calc(calc(100% / 2) - 3rem)'}}>
                             <Bar ref={ref} data={dailySales} style={{width: '100%', height: 'auto'}} />
+                            <CSVLink data={ExportDailyIncome()} filename="daily-income.csv" className="text-green-500 text-center block">
+                                Export to CSV
+                            </CSVLink>
                         </div>
                         <div style={{width: 'calc(calc(100% / 2) - 3rem)'}}>
                             <Bar ref={ref} data={weeklySales} style={{width: '100%', height: 'auto'}} />
+                            <CSVLink data={ExportWeeklyIncome()} filename="weekly-income.csv" className="text-green-500 text-center block">
+                                Export to CSV
+                            </CSVLink>
                         </div>
                         <div style={{width: 'calc(calc(100% / 2) - 3rem)'}}>
                             <Bar ref={ref} data={monthlySales} style={{width: '100%', height: 'auto'}} />
+                            <CSVLink data={ExportMonthlyIncome()} filename={`monthly-income.csv`} className="text-green-500 text-center block">
+                                Export to CSV
+                            </CSVLink>
                         </div>
                         </div>
                     </div>

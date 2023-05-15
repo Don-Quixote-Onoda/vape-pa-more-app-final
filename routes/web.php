@@ -39,7 +39,7 @@ use App\Models\ProductType;
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard',[
         'all_products' => Product::where('is_deleted', 0)->get() ,
-        'product_types' => ProductType::all()
+        'product_types' => ProductType::where('is_deleted', 0)->get()
         ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 

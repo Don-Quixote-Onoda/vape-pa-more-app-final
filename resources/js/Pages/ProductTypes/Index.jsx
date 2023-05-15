@@ -10,11 +10,8 @@ export default function ProductTypes(props) {
 
     let emptyProductType = {
         id: null,
-        productType_name: null,
-        productType_image: null,
-        price: null,
-        status: null,
-        quantity: null,
+        name: null,
+        type: null,
     };
 
     const [productTypeDialog, setProductTypeDialog] = useState(false);
@@ -26,18 +23,14 @@ export default function ProductTypes(props) {
     const toast = useRef(null);
     const { data, setData, post, reset, processing, errors } = useForm({
         id: null,
-        productType_name: null,
-        productType_image: null,
-        price: null,
-        status: null,
-        quantity: null,
+        name: null,
+        type: null,
     });
 
     const openNew = () => {
         setProductType(emptyProductType);
         setSubmitted(false);
         setProductTypeDialog(true);
-        console.log(productTypeDialog);
     };
 
     const editProductType = (productType) => {
@@ -74,7 +67,7 @@ export default function ProductTypes(props) {
                         <div className="card">
                             <Table  openNew={openNew}  editProductType={editProductType} confirmDeleteProductType={confirmDeleteProductType} setSelectedProductTypes={setSelectedProductTypes} selectedProductTypes={selectedProductTypes} />
                         </div>
-                        <FormDialog productType={productType} data={data} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} productTypeDialog={productTypeDialog} setSubmitted={setSubmitted} setProductTypeDialog={setProductTypeDialog} />
+                        <FormDialog  productTypeDialog={productTypeDialog} setProductTypeDialog={setProductTypeDialog}  productType={productType} data={data} reset={reset} setData={setData} post={post} errors={errors}  submitted={submitted} setSubmitted={setSubmitted}/>
 
                         <Delete productType={productType} data={data} reset={reset} setData={setData} post={post} errors={errors} deleteProductTypesDialog={deleteProductTypesDialog} setSelectedProductTypes={setSelectedProductTypes} selectedProductTypes={selectedProductTypes} setDeleteProductTypesDialog={setDeleteProductTypesDialog} setDeleteProductTypeDialog={setDeleteProductTypeDialog} deleteProductTypeDialog ={deleteProductTypeDialog } />
                     </div>

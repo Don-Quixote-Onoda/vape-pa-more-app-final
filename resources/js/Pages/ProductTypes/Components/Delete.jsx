@@ -3,22 +3,23 @@ import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Link, useForm, usePage } from '@inertiajs/react';
 
-export default function Delete({productsValue, setProducts, product, setDeleteProductDialog, deleteProductDialog, setDeleteProductsDialog, deleteProductsDialog, setSelectedProducts, data, setData, post, reset, processing, errors  }) {
+export default function Delete({productType, data, reset, setData, post, errors, deleteProductTypesDialog, setSelectedProductTypes, 
+    selectedProductTypes, setDeleteProductTypesDialog, setDeleteProductTypeDialog, deleteProductTypeDialog }) {
 
 
-    const hideDeleteProductDialog = () => {
-        setDeleteProductDialog(false);
+    const hideDeleteProductTypeDialog = () => {
+        setDeleteProductTypeDialog(false);
     };
 
     const hideDeleteProductsDialog = () => {
-        setDeleteProductsDialog(false);
+        setDeleteProductTypesDialog(false);
     };
 
-    const deleteProduct = () => {
+    const deleteProductType = () => {
        
-        post("api/delete_product", {
+        post(route('delete-product-type'), {
             onSuccess: () =>{
-                setDeleteProductDialog(false);
+                hideDeleteProductTypeDialog()
                 reset()
             },
         });
@@ -29,8 +30,8 @@ export default function Delete({productsValue, setProducts, product, setDeletePr
         // let _products = products.filter((val) => !selectedProducts.includes(val));
 
         // setProducts(_products);
-        setDeleteProductsDialog(false);
-        setSelectedProducts(null);
+        setDeleteProductTypesDialog(false);
+        setSelectedProductType(null);
         // toast.current.show({
         //     severity: "success",
         //     summary: "Successful",
@@ -46,13 +47,13 @@ export default function Delete({productsValue, setProducts, product, setDeletePr
                 label="No"
                 icon="pi pi-times"
                 outlined
-                onClick={hideDeleteProductDialog}
+                onClick={hideDeleteProductTypeDialog}
             />
             <Button
                 label="Yes"
                 icon="pi pi-check"
                 severity="danger"
-                onClick={deleteProduct}
+                onClick={deleteProductType}
             />
         </React.Fragment>
     );
@@ -76,28 +77,28 @@ export default function Delete({productsValue, setProducts, product, setDeletePr
     return (
         <div>
             <Dialog
-                visible={deleteProductDialog}
+                visible={deleteProductTypeDialog}
                 style={{ width: "32rem" }}
                 breakpoints={{ "960px": "75vw", "641px": "90vw" }}
                 header="Confirm"
                 modal
                 footer={deleteProductDialogFooter}
-                onHide={hideDeleteProductDialog}
+                onHide={hideDeleteProductTypeDialog}
             >
                 <div className="confirmation-content">
                     <i
                         className="pi pi-exclamation-triangle mr-3"
                         style={{ fontSize: "2rem" }}
                     />
-                    {product && (
+                    {productType && (
                         <span>
-                            Are you sure you want to delete <b>{product.name}</b>?
+                            Are you sure you want to delete <b>{productType.name}</b>?
                         </span>
                     )}
                 </div>
             </Dialog>
             <Dialog
-                visible={deleteProductsDialog}
+                visible={deleteProductTypesDialog}
                 breakpoints={{ "960px": "75vw", "641px": "90vw" }}
                 header="Confirm"
                 modal
@@ -109,7 +110,7 @@ export default function Delete({productsValue, setProducts, product, setDeletePr
                         className="pi pi-exclamation-triangle mr-3"
                         style={{ fontSize: "2rem" }}
                     />
-                    {product && (
+                    {productType && (
                         <span>
                             Are you sure you want to delete the selected products?
                         </span>

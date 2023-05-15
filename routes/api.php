@@ -5,6 +5,7 @@ use App\Http\Controllers\OrderDetailsController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\ProductTypesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestConstroller;
@@ -40,4 +41,6 @@ Route::post('delete_orderdetails', [OrderDetailsController::class, 'destroy'])->
 Route::post('delete_payment', [PaymentsController::class, 'destroy'])->name('deletePayment');
 Route::post('saveInventoryManagement', [InventoryManagementController::class, 'store'])->name('saveInventoryManagement');
 // Route::get('user-logs', [UserLogsController::class, 'index']);
-
+Route::post('save-product-type', [ProductTypesController::class, 'store'])->name('save-product-type');
+Route::post('edit-product-type', [ProductTypesController::class, 'update'])->name('edit-product-type');
+Route::post('delete-product-type', [ProductTypesController::class, 'destroy'])->name('delete-product-type');

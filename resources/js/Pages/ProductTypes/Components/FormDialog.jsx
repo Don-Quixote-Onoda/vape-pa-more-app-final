@@ -7,63 +7,57 @@ import { Dropdown } from "primereact/dropdown";
 import { classNames } from "primereact/utils";
 
 
-export default function FormDialog({productDialog, setSubmitted, setProductDialog, submitted, product, data, setData, post, reset, processing, errors}) {
+export default function FormDialog({productTypeDialog, setSubmitted, setProductTypeDialog, submitted, productType, data, setData, post, reset, processing, errors}) {
 
     const toast = useRef(null);
     const status = [{ name: "INSTOCK" }, { name: "LOWSTOCK" }, { name: "OUTOFSTOCK" }];
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProductDialog(false);
-        setData(product);
+        setProductTypeDialog(false);
+        setData(productType);
     };
 
-    const saveProduct = () => {
+    const saveProductType = () => {
         setSubmitted(true);
-
         if (
-            data.price &&
-            data.product_name &&
-            data.product_image &&
-            data.quantity &&
-            data.status
+            data.name &&
+            data.type
         ) {
             if (
-                data.price &&
-                data.product_name &&
-                data.quantity &&
-                data.status &&
+                data.name &&
+                data.type &&
                 data.id
             ) {
                
-                    post(route('updateProduct'), {
+                    post(route('edit-product-type'), {
                         forceFormData: true,
                         onSuccess: () =>{
-                            setProductDialog(false);
-                            setData(product);
+                            setProductTypeDialog(false);
+                            setData(productType);
+                            reset();
                         },
                         onError: () => {
                         },
                     });
                     
             } else {
-                post(route('saveProduct'), {
+                post(route('save-product-type'), {
                     forceFormData: true,
                     onSuccess: () =>{
-                        setProductDialog(false);
-                        setData(product);
+                        setProductTypeDialog(false);
+                        setData(productType);
                         reset();
                         toast.current.show({
                             severity: "success",
                             summary: "Successful",
-                            detail: "Product Created",
+                            detail: "Product Type Created",
                             life: 3000,
                         });
                     },
                     onError: () => {
                     },
                 });
-                
             }
         }
 
@@ -93,7 +87,7 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
                 outlined
                 onClick={hideDialog}
             />
-            <Button label="Save" icon="pi pi-check" onClick={saveProduct} />
+            <Button label="Save" icon="pi pi-check" onClick={saveProductType} />
         </React.Fragment>
     );
 
@@ -124,7 +118,7 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
 
     return (
         <Dialog
-            visible={productDialog}
+            visible={productTypeDialog}
             style={{ width: "32rem" }}
             breakpoints={{ "960px": "75vw", "641px": "90vw" }}
             header="Product Details"
@@ -133,97 +127,41 @@ export default function FormDialog({productDialog, setSubmitted, setProductDialo
             footer={productDialogFooter}
             onHide={hideDialog}
         >
-            <div className="field">
-                <label className="">Product Image</label>
-                <input
-                    type="file"
-                    className={`w-full px-4 py-2 ${classNames({
-                        "p-invalid": submitted && !data.product_image,
-                    })}`}
-                    label="Image"
-                    name="product_image"
-                    onChange={(e) => handleFileUpload(e, "product_image")}
-                />
-                {submitted && !data.product_image && (
-                    <small className="p-error">Product Image is required.</small>
-                )}
-            </div>
+        
             <div className="field">
                 <label htmlFor="firstname" className="font-bold">
-                    Product Name
+                    Name
                 </label>
                 <InputText
-                    id="product_name"
-                    value={data.product_name}
-                    onChange={(e) => onInputChange(e, "product_name")}
+                    id="name"
+                    value={data.name}
+                    onChange={(e) => onInputChange(e, "name")}
                     required
                     autoFocus
                     className={classNames({
-                        "p-invalid": submitted && !data.product_name,
+                        "p-invalid": submitted && !data.name,
                     })}
                 />
-                {submitted && !data.product_name && (
-                    <small className="p-error">Product Name is required.</small>
+                {submitted && !data.name && (
+                    <small className="p-error">Name is required.</small>
                 )}
             </div>
-            <div className="field mb-5">
-                <label htmlFor="price" className="font-bold">
-                    Price
+            <div className="field mt-5">
+                <label htmlFor="type" className="font-bold">
+                    Type
                 </label>
-                <InputNumber
-                    id="price"
-                    value={data.price}
-                    onChange={(e) => onInputNumberChange(e, "price")}
-                    useGrouping={false}
+                <InputText
+                    id="type"
+                    value={data.type}
+                    onChange={(e) => onInputChange(e, "type")}
                     required
                     autoFocus
                     className={classNames({
-                        "p-invalid": submitted && !data.price,
+                        "p-invalid": submitted && !data.type,
                     })}
                 />
-                {submitted && !data.price && (
-                    <small className="p-error">Price is required.</small>
-                )}
-            </div>
-            <div className="field mb-5">
-                <label htmlFor="price" className="font-bold">
-                    Quantity
-                </label>
-                <InputNumber
-                    id="quantity"
-                    value={data.quantity}
-                    onChange={(e) => onInputNumberChange(e, "quantity")}
-                    useGrouping={false}
-                    required
-                    autoFocus
-                    className={classNames({
-                        "p-invalid": submitted && !data.quantity,
-                    })}
-                />
-                {submitted && !data.quantity && (
-                    <small className="p-error">Quantity is required.</small>
-                )}
-            </div>
-            <div className="field mb-5">
-                <label htmlFor="email" className="font-bold">
-                    Status
-                </label>
-                <Dropdown
-                    value={
-                        (data.status) == 'INSTOCK' ? 'INSTOCK' : 
-                        (data.status) == 'LOWSTOCK' ? 'LOWSTOCK' : 'OUTOFSTOCK'
-                    }
-                    onChange={(e) => onStatusChange(e, "status")}
-                    options={status}
-                    optionLabel="name"
-                    editable
-                    placeholder="Select a Status"
-                    className={`w-full md:w-14rem ${classNames({
-                        "p-invalid": submitted && !data.status,
-                    })} `}
-                />
-                {submitted && !data.status && (
-                    <small className="p-error">Status is required.</small>
+                {submitted && !data.type && (
+                    <small className="p-error">Type is required.</small>
                 )}
             </div>
         </Dialog>

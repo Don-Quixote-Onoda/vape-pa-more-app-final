@@ -31,7 +31,12 @@ class ProductTypesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        ProductType::create([
+            'name' => $request->name,
+            'type' => $request->type,
+            'is_deleted' => 0
+        ]);
+        return Redirect::route('product-types.index');
     }
 
     /**
@@ -53,16 +58,27 @@ class ProductTypesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $productType = ProductType::find($request->id);
+        $productType->update([
+            'name' => $request->name,
+            'type' => $request->type
+        ]);
+        $productType->save();
+        return Redirect::route('product-types.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $productType = ProductType::find($request->id);
+        $productType->update([
+            'is_deleted' => 1
+        ]);
+        $productType->save();
+        return Redirect::route('product-types.index');
     }
 }
