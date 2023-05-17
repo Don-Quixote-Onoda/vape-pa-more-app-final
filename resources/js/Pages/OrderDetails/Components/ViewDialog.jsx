@@ -123,7 +123,7 @@ export default function ViewDialog({
                 <span className="text text-center flex justify-between"><span className="font-bold">Date</span><br/><span className="">{getCurrentDateFormat()}</span></span>
                 </d>
                 </div>
-                <div className="flex flex-col gap-1 mt-1 w-full items-center justify-between">
+                <div className="flex flex-col gap-1 mt-5 w-full items-center justify-between">
                     <header className="flex w-full justify-between">
                         <h4 className="font-bold">Orders</h4>
                         <p className="font-bold">Subtotal</p>
@@ -160,7 +160,7 @@ export default function ViewDialog({
                                     <hr />
                                 </div>
                             ))}
-                            <div className="flex justify-between pt-5">
+                            <div className="flex justify-between pt-5 mt-3">
                                 <h4 className=" font-bold">Total:</h4>
                                 <p className="text-end">
                                     {numberFormat(data.total_amount)}
@@ -171,7 +171,7 @@ export default function ViewDialog({
                     )}
                 </div>
 
-                <div className="flex flex-col gap-1 mb-5 w-full items-center justify-between">
+                <div className="flex flex-col gap-1 mb-8 w-full items-center justify-between">
                     <div className="flex w-full justify-between self-start">
                         <span className="text-md font-bold">Cash Amount</span>
                         <h1>{numberFormat(data.cash)}</h1>
