@@ -52,6 +52,10 @@ export default function OrderDetails(props) {
         setOrderDetailDialog(true);
     };
 
+    useEffect(() => {
+        props
+    })
+
     const editOrderDetail = (orderDetail) => {
         setData({ ...orderDetail });
         setOrderDetailDialog(true);

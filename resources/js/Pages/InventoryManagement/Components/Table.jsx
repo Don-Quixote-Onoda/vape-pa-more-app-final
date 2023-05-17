@@ -33,13 +33,13 @@ export default function Table(props) {
     const actionBodyTemplate = (rowData) => {
         return (
             <React.Fragment>
-                <Button
+                {/* <Button
                     icon="pi pi-pencil"
                     rounded
                     outlined
                     className="mr-2"
                     onClick={() => props.editProduct(rowData)}
-                />
+                /> */}
                 {
                     user_role == 1 && <Button
                     icon="pi pi-trash"
@@ -143,7 +143,6 @@ export default function Table(props) {
             header={header}
             sortField={sortField} sortOrder={sortOrder} onSort={onSort}
         >
-            <Column selectionMode="multiple" exportable={false}></Column>
             <Column
                 field="name"
                 header="Name"

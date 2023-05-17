@@ -44,14 +44,15 @@ class InventoryManagementController extends Controller
         }
         
         $prevQuantity = $product->quantity;
-        $product->product_image = $filename;
+        if($filename != '')
+            $product->product_image = $filename;
         $product->quantity = $prevQuantity + $request->quantity;
         $product->save();
         ProductInventory::create([
             'name' => $product->product_name,
             'quantity' => $request->quantity,
             'date_added' => date('Y-m-d H:i:s', time()),
-            'product_type_name' => $product_type->name,
+            'product_type_name' => '',
             'product_type_id' => 1
         ]);
 
@@ -77,16 +78,19 @@ class InventoryManagementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $prod = ProductInventory::find($request->id);
+        $prod->delete();
+
+        return Redirect::route('inventory-management.index');
     }
 }

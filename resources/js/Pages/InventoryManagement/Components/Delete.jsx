@@ -15,8 +15,8 @@ export default function Delete({productsValue, setProducts, product, setDeletePr
     };
 
     const deleteProduct = () => {
-       
-        post("api/delete_product", {
+       console.log('ok');
+        post(route('deleteInventoryManagement'), {
             onSuccess: () =>{
                 setDeleteProductDialog(false);
                 reset()

@@ -32,8 +32,8 @@ class ProductTypesController extends Controller
     public function store(Request $request)
     {
         ProductType::create([
-            'name' => $request->name,
-            'type' => $request->type,
+            'name' => $request->name != null ? $request->name : '',
+            'type' => $request->type != null ? $request->type : '',
             'is_deleted' => 0
         ]);
         return Redirect::route('product-types.index');

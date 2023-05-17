@@ -23,13 +23,11 @@ export default function FormDialog({products, type, productDialog, product_types
         if (
             data.quantity &&
             data.product_id &&
-            data.product_type &&
             data.quantity
         ) {
             if (
                 data.quantity &&
                 data.product_id &&
-                data.product_type &&
                 data.quantity &&
                 data.id
             ) {
@@ -133,16 +131,14 @@ export default function FormDialog({products, type, productDialog, product_types
                 <label className="">Product Image</label>
                 <input
                     type="file"
-                    className={`w-full px-4 py-2 ${classNames({
-                        "p-invalid": submitted && !data.product_image,
-                    })}`}
+                    className={`w-full px-4 py-2`}
                     label="Image"
                     name="product_image"
                     onChange={(e) => handleFileUpload(e, "product_image")}
                 />
-                {submitted && !data.product_image && (
+                {/* {submitted && !data.product_image && (
                     <small className="p-error">Product Image is required.</small>
-                )}
+                )} */}
             </div>
             }
             <div className="field mb-5">
@@ -192,7 +188,7 @@ export default function FormDialog({products, type, productDialog, product_types
                     <small className="p-error">Quantity is required.</small>
                 )}
             </div>
-           <div className="field mb-5">
+           {/* <div className="field mb-5">
                 <label htmlFor="email" className="font-bold">
                     Product Type
                 </label>
@@ -217,7 +213,7 @@ export default function FormDialog({products, type, productDialog, product_types
                     <small className="p-error">Product Type is required.</small>
                 )}
                 
-            </div>
+            </div> */}
             
         </Dialog>
     );

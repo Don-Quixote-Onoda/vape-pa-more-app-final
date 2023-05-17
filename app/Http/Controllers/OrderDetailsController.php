@@ -31,6 +31,8 @@ class OrderDetailsController extends Controller
                         'quantity' => $orderItem->quantity,
                         'total_price' => $orderItem->total_price,
                         'price' => $orderItem->product->price,
+                        'product_type_name' => $orderItem->product_type_name,
+                        'product_type' => $orderItem->product_type,
                     );
                 
                 array_push($orders, $items);

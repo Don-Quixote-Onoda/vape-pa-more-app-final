@@ -31,6 +31,7 @@ export default function Products(props) {
         id: null
     });
     const [type, setType] = useState('default');
+    const [product_types, setProductTypes] = useState();
 
     useEffect(() => {
         console.log(props);

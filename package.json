@@ -37,6 +37,7 @@
         "html-to-image": "^1.11.11",
         "jspdf": "^2.5.1",
         "material-table": "^2.0.3",
+        "nprogress": "^0.2.0",
         "primeflex": "^3.3.0",
         "primeicons": "^6.0.1",
         "primereact": "^9.2.0",

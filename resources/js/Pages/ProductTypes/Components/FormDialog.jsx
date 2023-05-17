@@ -20,13 +20,7 @@ export default function FormDialog({productTypeDialog, setSubmitted, setProductT
 
     const saveProductType = () => {
         setSubmitted(true);
-        if (
-            data.name &&
-            data.type
-        ) {
             if (
-                data.name &&
-                data.type &&
                 data.id
             ) {
                
@@ -59,8 +53,6 @@ export default function FormDialog({productTypeDialog, setSubmitted, setProductT
                     },
                 });
             }
-        }
-
 
         
     };
@@ -138,13 +130,13 @@ export default function FormDialog({productTypeDialog, setSubmitted, setProductT
                     onChange={(e) => onInputChange(e, "name")}
                     required
                     autoFocus
-                    className={classNames({
-                        "p-invalid": submitted && !data.name,
-                    })}
+                    // className={classNames({
+                    //     "p-invalid": submitted && !data.name,
+                    // })}
                 />
-                {submitted && !data.name && (
+                {/* {submitted && !data.name && (
                     <small className="p-error">Name is required.</small>
-                )}
+                )} */}
             </div>
             <div className="field mt-5">
                 <label htmlFor="type" className="font-bold">
@@ -156,13 +148,13 @@ export default function FormDialog({productTypeDialog, setSubmitted, setProductT
                     onChange={(e) => onInputChange(e, "type")}
                     required
                     autoFocus
-                    className={classNames({
-                        "p-invalid": submitted && !data.type,
-                    })}
+                    // className={classNames({
+                    //     "p-invalid": submitted && !data.type,
+                    // })}
                 />
-                {submitted && !data.type && (
+                {/* {submitted && !data.type && (
                     <small className="p-error">Type is required.</small>
-                )}
+                )} */}
             </div>
         </Dialog>
     );

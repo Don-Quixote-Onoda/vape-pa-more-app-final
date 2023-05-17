@@ -93,12 +93,12 @@ export default function Table(props) {
                 className="p-button-help"
                 onClick={exportPdf}
             />
-            <Button
+            {/* <Button
                 label="New"
                 icon="pi pi-plus"
                 className="p-button-help self-end"
                 onClick={props.openNew}
-            />
+            /> */}
             </div>
         </div>
     );
@@ -157,6 +157,18 @@ export default function Table(props) {
             ></Column>
             <Column
                 field="quantity"
+                header="Quantity"
+                sortable
+                style={{ minWidth: "2rem" }}
+            ></Column>
+            <Column
+                field="product_type_name"
+                header="Quantity"
+                sortable
+                style={{ minWidth: "2rem" }}
+            ></Column>
+            <Column
+                field="product_type"
                 header="Quantity"
                 sortable
                 style={{ minWidth: "2rem" }}

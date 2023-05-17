@@ -40,6 +40,8 @@ Route::post('delete_order', [OrdersController::class, 'destroy'])->name('deleteO
 Route::post('delete_orderdetails', [OrderDetailsController::class, 'destroy'])->name('deleteOrderDetails');
 Route::post('delete_payment', [PaymentsController::class, 'destroy'])->name('deletePayment');
 Route::post('saveInventoryManagement', [InventoryManagementController::class, 'store'])->name('saveInventoryManagement');
+Route::post('updateInventoryManagement', [InventoryManagementController::class, 'update'])->name('updateInventoryManagement');
+Route::post('deleteInventoryManagement', [InventoryManagementController::class, 'destroy'])->name('deleteInventoryManagement');
 // Route::get('user-logs', [UserLogsController::class, 'index']);
 Route::post('save-product-type', [ProductTypesController::class, 'store'])->name('save-product-type');
 Route::post('edit-product-type', [ProductTypesController::class, 'update'])->name('edit-product-type');

@@ -102,6 +102,10 @@ export default function ViewDialog({
         return formattedDate;
     }
 
+    useEffect(() => {
+    console.log(data);
+
+    })
     return (
         <Dialog
             visible={orderDetailDialog}
@@ -112,37 +116,38 @@ export default function ViewDialog({
             className="p-fluid"
             onHide={hideDialog}
         >
-            <div className="flex printPDF flex-col pb-2 items-center gap-3 py-5 p-2 px-6">
-            <ApplicationLogo className="block h-16 w-auto fill-current text-gray-800" />
-                <div className="flex flex-col w-full"><h1 className="text-2xl font-bold mb-2">Vape pa More - Payment Reciept</h1>
-                <span className="text-xs">{getCurrentDateFormat()}</span></div>
-                <div className="flex flex-col gap-3 w-full items-center justify-between p-2">
+            <div className="flex printPDF flex-col pb-2 items-center gap-3 py-5 p-2 px-6 p-10">
+                <div className="flex flex-col w-full"><h1 className="text-2xl text-center font-bold mb-10">Welcome to Vape Pa More</h1>
+                <d className="flex flex-col justify-between mt-5">
+                <span className="text text-center flex justify-between"><span className="font-bold">Order Number</span><br/><span className="">{data.order_number}</span></span>
+                <span className="text text-center flex justify-between"><span className="font-bold">Date</span><br/><span className="">{getCurrentDateFormat()}</span></span>
+                </d>
+                </div>
+                <div className="flex flex-col gap-1 mt-1 w-full items-center justify-between">
                     <header className="flex w-full justify-between">
-                        <h4>Orders</h4>
-                        <p>Subtotal</p>
+                        <h4 className="font-bold">Orders</h4>
+                        <p className="font-bold">Subtotal</p>
                     </header>
                     <hr />
 
                     {data.orders !== undefined && (
-                        <main className="py-2 w-full">
+                        <main className="w-full">
                             {data.orders.map((order, index) => (
                                 <div>
                                     <div
-                                        className="flex flex-row align-end justify-between py-2"
+                                        className="flex flex-row align-end justify-between"
                                         style={{ position: "relative" }}
                                     >
                                         <div>
-                                            <img
-                                                className="w-24 shadow-2 rounded"
-                                                src={`http://127.0.0.1:8000/uploads/products/${order.product_image}`}
-                                                alt={order.product_name}
-                                            />
-                                            <p className="font-bold">
-                                                {order.product_name}
+                                            <p className="">
+                                                {order.product_name} - {order.product_type !== null && order.product_type}
+                                            </p>
+                                            <p className="">
+                                                {order.product_type_name}
                                             </p>
                                         </div>
                                         <div className="self-end">
-                                            <p className="text-end font-bold">
+                                            <p className="text-end">
                                                 {numberFormat(
                                                     order.total_price
                                                 )}
@@ -155,29 +160,24 @@ export default function ViewDialog({
                                     <hr />
                                 </div>
                             ))}
-                            <div className="flex justify-between py-5">
-                                <h4>Total:</h4>
-                                <p className="text-end font-bold">
+                            <div className="flex justify-between pt-5">
+                                <h4 className=" font-bold">Total:</h4>
+                                <p className="text-end">
                                     {numberFormat(data.total_amount)}
                                 </p>
                             </div>
+                            
                         </main>
                     )}
                 </div>
 
-                <div className="flex flex-col gap-3 w-full items-center justify-between p-2">
-                    <div className="w-full">
-                        <h5 className="text-xl font-bold">
-                            {data.order_number}
-                        </h5>
-                        <span className=" mb-3">Order Number</span>
-                    </div>
-                    <div className="flex w-full flex-col self-start">
+                <div className="flex flex-col gap-1 mb-5 w-full items-center justify-between">
+                    <div className="flex w-full justify-between self-start">
                         <span className="text-md font-bold">Cash Amount</span>
                         <h1>{numberFormat(data.cash)}</h1>
                     </div>
                     <hr className="bg-red-900" />
-                    <div className="flex w-full flex-col self-start">
+                    <div className="flex w-full justify-between self-start">
                         <span className="text-md font-bold">Change</span>
 
                         <h1>{numberFormat(data.change)}</h1>

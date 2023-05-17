@@ -25,7 +25,9 @@ class OrdersController extends Controller
                     'product_image' => $item->product->product_image,
                     'quantity' => $item->quantity,
                     'total_price' => $item->total_price,
-                    'price' => $item->product->price
+                    'price' => $item->product->price,
+                    'product_type_name' => $item->product->product_type_name,
+                    'product_type' => $item->product->selection,
                 );
                 array_push($orders, $items);
             }
@@ -54,8 +56,9 @@ class OrdersController extends Controller
                 'order_number' => $request->order_details['order_number'],
                 'quantity' => $item['quantity'],
                 'total_price' => $item['subtotal'],
-            'product_type_id'=> 1,
-
+                'product_type_id'=> 1,
+                'product_type_name' => $item['product_type_name'],
+                'product_type' => $item['selection'],
                 'is_deleted' => 0
             ]);
             $product = Product::find($item['product_id']);

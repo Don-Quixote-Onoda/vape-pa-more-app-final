@@ -13,6 +13,10 @@ import { router } from '@inertiajs/react'
 import axios from 'axios';
 import dashboard_styles from './Dashboard.css';
 import { classNames } from "primereact/utils";
+import 'nprogress/nprogress.css';
+import NProgress from 'nprogress';
+
+NProgress.configure({ showSpinner: false });
 
 export default function Dashboard(props) {
     const [products, setProducts] = useState([]);
@@ -69,6 +73,7 @@ export default function Dashboard(props) {
         let orderExists = false;
         let orderIndex = null;
         let updatedQuantity = null;
+        let updatedSubTotal = null;
 
         let newOrder =  {
             image: product.product_image,
@@ -87,6 +92,7 @@ export default function Dashboard(props) {
                     orderExists = true;
                     orderIndex = index;
                     updatedQuantity = quantity + order.quantity;
+                    updatedSubTotal =  updatedQuantity * product.price;
                 }
             });
             products.forEach(item => {
@@ -100,7 +106,8 @@ export default function Dashboard(props) {
                     const updatedOrder = [...prevOrder];
                     updatedOrder[orderIndex] = {
                       ...updatedOrder[orderIndex],
-                      quantity: updatedQuantity
+                      quantity: updatedQuantity,
+                      subtotal: updatedSubTotal
                     };
                     return updatedOrder;
                 });
@@ -178,7 +185,9 @@ export default function Dashboard(props) {
           setTotalChange(null);
     }
 
-    const saveOrderDetails = () => {
+    const saveOrderDetails = async (event) => {
+        event.preventDefault();
+    NProgress.start(); 
       setSubmitted(true);
         localStorage.setItem('items', JSON.stringify({
             orders: orders,
@@ -218,25 +227,28 @@ export default function Dashboard(props) {
         //     onError: () => {
         //     },
         // });
-        axios.post(route('orders.store'), {
-            orders: orders,
-            order_details: {
+        try {
+            await axios.post(route('orders.store'), {
+              orders: orders,
+              order_details: {
                 total_amount: totalAmount,
                 order_number: orderNumber,
                 cash: cashAmount,
                 change: totalChange
-            },
-            user_id: props.auth.user.id
-        })
-        .then((response) => {
+              },
+              user_id: props.auth.user.id
+            });
+      
             setShowOrderDetailModal(false);
             setCashAmount(null);
             setTotalChange(null);
             setSubmitted(false);
-            setOrders([]); 
-        })
-        .catch((error) => {
-        });
+            setOrders([]);
+          } catch (error) {
+            // Handle error
+          } finally {
+            NProgress.done(); // Stop the progress indicator
+          }
     } 
 
     }
@@ -503,13 +515,13 @@ export default function Dashboard(props) {
                 <br />
                 {
                     props.product_types.map(type => (
-                        <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductTypeNameID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductTypeName(type)}>{type.name}</button>
+                        type.name !== '' &&  <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductTypeNameID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductTypeName(type)}>{type.name}</button>
                     ))
                 }
     <br />
                 {
                     selection !== null && props.product_types.map(type => (
-                        <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductSelectionID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductSelection(type)}>{type.type}</button>
+                        type.type !== '' && <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductSelectionID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductSelection(type)}>{type.type}</button>
                     ))
                 }
                 {/* {submitted && !data.product_type && (
@@ -644,7 +656,7 @@ export default function Dashboard(props) {
                             style={{ "justify-content": "center" }}
                             className="text-center"
                             disabled={product.inventoryStatus === "OUTOFSTOCK"}
-                            onClick={() => saveOrderDetails()}
+                            onClick={e => saveOrderDetails(e)}
                         >
                             Pay
                         </Button>
