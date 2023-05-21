@@ -34,10 +34,25 @@ export default function Dashboard(props) {
     
 
     const { data, setData, post, reset, processing, errors } = useForm(JSON.parse(localStorage.getItem('items')));
-
+    const uniqueNamesSet = new Set();
+    const filteredItemNames = props.product_types.filter(item => {
+        const lowercaseName = item.name.trim().toLowerCase();
+        if (lowercaseName !== '' && !uniqueNamesSet.has(lowercaseName)) {
+        uniqueNamesSet.add(lowercaseName);
+        return true;
+        }
+        return false;
+    });
+    const filteredItemTypes = props.product_types.filter(item => {
+        const lowercaseName = item.type.trim().toLowerCase();
+        if (lowercaseName !== '' && !uniqueNamesSet.has(lowercaseName)) {
+        uniqueNamesSet.add(lowercaseName);
+        return true;
+        }
+        return false;
+    });
     useEffect(() => {
             setProducts(props.all_products);
-            console.log(props);
     }, []); 
 
 
@@ -514,13 +529,13 @@ export default function Dashboard(props) {
                 </label>
                 <br />
                 {
-                    props.product_types.map(type => (
+                    filteredItemNames.map(type => (
                         type.name !== '' &&  <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductTypeNameID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductTypeName(type)}>{type.name}</button>
                     ))
                 }
     <br />
                 {
-                    selection !== null && props.product_types.map(type => (
+                    selection !== null && filteredItemTypes.map(type => (
                         type.type !== '' && <button className={`mt-4 mr-2 bg-blue-800 px-4 py-1 ${selectedProductSelectionID === type.id ? 'selected':''} text-white rounded`} onClick={e => handleProductSelection(type)}>{type.type}</button>
                     ))
                 }
