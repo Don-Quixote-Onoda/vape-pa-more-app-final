@@ -138,7 +138,7 @@ export default function SummaryReports(props) {
         labels: monthlySale.map(data =>data.month),
         datasets: [
             {
-                label: "Weekly Income",
+                label: "Monthly Income",
                 data: monthlySale.map(data =>data.total_amount),
                 hoverOffset: 4,
             },

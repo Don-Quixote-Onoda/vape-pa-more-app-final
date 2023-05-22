@@ -30,6 +30,7 @@ export default function Table(props) {
     };
 
     const actionBodyTemplate = (rowData) => {
+        console.log(rowData);
         return (
             <React.Fragment>
                 <Button
@@ -157,18 +158,6 @@ export default function Table(props) {
             ></Column>
             <Column
                 field="quantity"
-                header="Quantity"
-                sortable
-                style={{ minWidth: "2rem" }}
-            ></Column>
-            <Column
-                field="product_type_name"
-                header="Quantity"
-                sortable
-                style={{ minWidth: "2rem" }}
-            ></Column>
-            <Column
-                field="product_type"
                 header="Quantity"
                 sortable
                 style={{ minWidth: "2rem" }}

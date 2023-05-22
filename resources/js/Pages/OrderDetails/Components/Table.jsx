@@ -95,21 +95,13 @@ export default function Table(props) {
 
     const header = (
         <div className="flex flex-wrap gap-2 align-items-center flex-nowrap justify-content-between">
-            <span className="p-input-icon-left basis-1/4">
-                <i className="pi pi-search" />
-                <InputText
-                    type="search"
-                    onInput={(e) => setGlobalFilter(e.target.value)}
-                    placeholder="Search..."
-                />
-            </span>
             <div className="flex gap-3 justify-between basis-3/4">
-            <Button
+            {/* <Button
                 label="Export"
                 icon="pi pi-upload"
                 className="p-button-help"
                 onClick={exportPdf}
-            />
+            /> */}
             <Button
                 label="New"
                 icon="pi pi-plus"

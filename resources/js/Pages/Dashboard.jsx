@@ -442,6 +442,10 @@ export default function Dashboard(props) {
                                                 </p>
                                             </div>
                                         </div>
+                                        <p className="flex justify-between mb-3">
+                                                <strong>Product Type: </strong>
+                                                <span>{order.product_type_name}</span>
+                                            </p>
                                         <hr />
                                     </div>
                                 ))}
@@ -614,7 +618,12 @@ export default function Dashboard(props) {
                                                 </p>
                                             </div>
                                         </div>
+                                        <p className="flex justify-between mb-3">
+                                                <strong>Product Type: </strong>
+                                                <span>{order.product_type_name}</span>
+                                            </p>
                                         <hr />
+
                                     </div>
                                 ))}
                                 <div className="flex justify-between py-5">
