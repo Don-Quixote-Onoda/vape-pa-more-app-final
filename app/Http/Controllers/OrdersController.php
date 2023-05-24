@@ -153,4 +153,46 @@ class OrdersController extends Controller
                 'orders' => $orders
             ]);
     }
+
+    public function getOrderSumary() {
+
+        $orderDetails = OrderDetail::latest()->first();
+        $response = array();
+        
+        $orders = array();
+        $order = Order::where([
+            'is_deleted' => 0,
+            'order_number' => $orderDetails->order_number
+        ])->get();
+
+                foreach($order as $orderItem) {
+                    $items = array(
+                        'id' => $orderItem->id,
+                        'product_name' => $orderItem->product->product_name,
+                        'product_image' => $orderItem->product->product_image,
+                        'quantity' => $orderItem->quantity,
+                        'total_price' => $orderItem->total_price,
+                        'price' => $orderItem->product->price,
+                        'product_type_name' => $orderItem->product_type_name,
+                        'product_type' => $orderItem->product_type,
+                    );
+                array_push($orders, $items);
+            }
+            array_push($response, array(
+                'id' => $orderDetails->id,
+                'total_amount' => $orderDetails->total_amount,
+                'cash' => $orderDetails->cash,
+                'change' => $orderDetails->change,
+                'order_number' => $orderDetails->order_number,
+                'orders'=> $orders,
+                'user' => $orderDetails->user,
+                'transaction_date' => $orderDetails->created_at
+            ));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Data retrieved successfully.',
+            'data' => $response[0],
+        ]);
+    }
 }

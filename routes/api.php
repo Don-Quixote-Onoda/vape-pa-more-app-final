@@ -46,3 +46,4 @@ Route::post('deleteInventoryManagement', [InventoryManagementController::class, 
 Route::post('save-product-type', [ProductTypesController::class, 'store'])->name('save-product-type');
 Route::post('edit-product-type', [ProductTypesController::class, 'update'])->name('edit-product-type');
 Route::post('delete-product-type', [ProductTypesController::class, 'destroy'])->name('delete-product-type');
+Route::get('get-order-summary', [OrdersController::class, 'getOrderSumary'])->name('get-order-summary');
